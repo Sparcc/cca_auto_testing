@@ -2,7 +2,7 @@
 This is a set of scripts to help with automated testing on the Coca Cola Amatil website.
 
 # Files Required
-These scripts rely on the:
+These scripts rely on:
 * Python 3.6.2 - The scripting language. Link: https://www.python.org/
 * Selenium Webdriver - Running the drivers. Link: http://docs.seleniumhq.org/download/
 * Geckodriver.exe - For Firefox automation. Link: https://github.com/mozilla/geckodriver/releases
