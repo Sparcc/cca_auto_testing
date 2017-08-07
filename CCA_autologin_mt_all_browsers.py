@@ -66,11 +66,11 @@ drivers=[webdriver.Chrome(driver_paths['Chrome'])
 
 i=0
 p=[]
-for driver in drivers:
-	p.append(Process(target=driverThread, args=(
-					i+1, 'FirefoxBrowser', drivers[i])))
-	p[i].start()
-	i+=1
+if __name__ == '__main__':
+	for driver in drivers:
+		p.append(Process(target=driverThread, args=(i+1, 'FirefoxBrowser', drivers[i])))
+		p[i].start()
+		i+=1
 	
 		
 #p = Process(target=driverThread, args=(1, 'FirefoxBrowser', webdriver.Firefox(profile),))
