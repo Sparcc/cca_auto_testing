@@ -22,7 +22,7 @@ driver_paths = {'Chrome': 'C:\Selenium\chromedriver.exe',
 		'IE': 'C:\Selenium\MicrosoftWebDriver.exe'
 		};
 
-def driverThread(threadID, name, driver):
+def driverThread(driver):
 	print("Starting " + name)
 	
 	#Different drivers have different functions!
@@ -39,12 +39,6 @@ def driverThread(threadID, name, driver):
 	if 'error' in driver.title:
 		driver.find_element_by_id('moreInformationDropdownSpan').click()
 		driver.find_element_by_id('invalidcert_continue').click()
-  
-	'''
-	element = WebDriverWait(driver, 10).until(
-		EC.presence_of_element_located((By.ID, 'loginLink'))
-	)
-	'''
 	
 	element = driver.find_element_by_id("Username")
 	element.send_keys(usr)
@@ -64,14 +58,18 @@ drivers=[webdriver.Chrome(driver_paths['Chrome']),
 drivers=[webdriver.Chrome(driver_paths['Chrome'])
 		];	
 
-i=0
+i=0		
+p = Process(target=driverThread, args=(drivers[i],))
+p.start()
+'''
 p=[]
+i=0
 if __name__ == '__main__':
 	for driver in drivers:
-		p.append(Process(target=driverThread, args=(i+1, 'FirefoxBrowser', drivers[i])))
+		p.append(Process(target=driverThread, args=(drivers[i],)))
 		p[i].start()
-		i+=1
-	
+	i=i+1
+'''
 		
 #p = Process(target=driverThread, args=(1, 'FirefoxBrowser', webdriver.Firefox(profile),))
 #p.start()

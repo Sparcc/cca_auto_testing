@@ -15,7 +15,7 @@ driver_paths = {'Chrome': 'C:\Selenium\chromedriver.exe',
 		};
 
 #turn multi-browser login on/off
-singleBrowser = True
+singleBrowser = False
 designatedBrowser = driver_paths['Chrome'];
 #setting driver options
 profile = webdriver.FirefoxProfile()
