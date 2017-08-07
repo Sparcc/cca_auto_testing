@@ -5,8 +5,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 #testing 10-75 promotions
-usr = 'cutedog@xyz123.com'
-passwd = '35Paxton'
+usr = 'abcdxyz@outlook.com'
+passwd = 'Mycca@11'
 outlet = '2288416'
 
 driver_paths = {'Chrome': 'C:\Selenium\chromedriver.exe',
