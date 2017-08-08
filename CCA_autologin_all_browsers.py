@@ -5,9 +5,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 #testing 10-75 promotions
-usr = {'promo-80': 'cutedog@xyz123.com'
+usr = {'promo-9193': 'cutedog@xyz123.com',
+		'promo-80': 'myccatest123@gmail.com'
 		};
-passwd = {'promo-80': '35Paxton'
+passwd = {'promo-9193': '35Paxton',
+		'promo-80': 'Mycca@11'
 		};
 outlet = '2288416'
 
