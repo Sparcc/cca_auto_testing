@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 #login details
 usr = 'abcdxyz@outlook.com'
 passwd = 'Mycca@11'
-outlet = '2288416'
+outlet = '5151408'
 
 driver_paths = {'Chrome': 'C:\Selenium\chromedriver.exe',
 		'Edge': 'C:\Selenium\MicrosoftWebDriver.exe',
@@ -80,11 +80,9 @@ for driver in drivers:
 	driver.find_element_by_id("signInButton").click()
 	
 	driver.find_element_by_class_name("showmyprofileddl").click()
-	driver.implicitly_wait(10)
 	driver.find_element_by_link_text("Switch outlet").click()
-	
-	driver.implicitly_wait(10)
 	driver.find_element_by_class_name("search").send_keys(outlet)
+	driver.find_element_by_xpath('//*[@id="outletList"]/div/div/img').click()
 
 accept_commands = True
 while accept_commands:
