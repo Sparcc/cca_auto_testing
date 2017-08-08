@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-#testing 10-75 promotions
+#login details
 usr = 'abcdxyz@outlook.com'
 passwd = 'Mycca@11'
 outlet = '2288416'
