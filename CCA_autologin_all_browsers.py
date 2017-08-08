@@ -9,6 +9,8 @@ usr = 'abcdxyz@outlook.com'
 passwd = 'Mycca@11'
 outlet = '5151408'
 
+selectOutlet = False
+
 driver_paths = {'Chrome': 'C:\Selenium\chromedriver.exe',
 		'Edge': 'C:\Selenium\MicrosoftWebDriver.exe',
 		'IE': 'C:\Selenium\MicrosoftWebDriver.exe'
@@ -79,10 +81,11 @@ for driver in drivers:
 	element.send_keys(passwd)
 	driver.find_element_by_id("signInButton").click()
 	
-	driver.find_element_by_class_name("showmyprofileddl").click()
-	driver.find_element_by_link_text("Switch outlet").click()
-	driver.find_element_by_class_name("search").send_keys(outlet)
-	driver.find_element_by_xpath('//*[@id="outletList"]/div/div/img').click()
+	if selectOutlet:
+		driver.find_element_by_class_name("showmyprofileddl").click()
+		driver.find_element_by_link_text("Switch outlet").click()
+		driver.find_element_by_class_name("search").send_keys(outlet)
+		driver.find_element_by_xpath('//*[@id="outletList"]/div/div/img').click()
 
 accept_commands = True
 while accept_commands:
