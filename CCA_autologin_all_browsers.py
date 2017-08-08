@@ -5,8 +5,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 #testing 10-75 promotions
-usr = 'cutedog@xyz123.com'
-passwd = '35Paxton'
+usr = {'promo-80': 'cutedog@xyz123.com'
+		};
+passwd = {'promo-80': '35Paxton'
+		};
 outlet = '2288416'
 
 driver_paths = {'Chrome': 'C:\Selenium\chromedriver.exe',
@@ -34,6 +36,9 @@ drivers=[webdriver.Chrome(driver_paths['Chrome']),
 		webdriver.Ie(driver_paths['IE'])
 		];
 '''
+login='promo-80'
+usrCurrent=usr[login]
+passwdCurrent=passwd[login]
 
 if singleBrowser:
 	drivers=[webdriver.Chrome(designatedBrowser)];
@@ -42,13 +47,6 @@ else:
 		webdriver.Chrome(driver_paths['Chrome']),
 		webdriver.Edge(driver_paths['Edge'])
 		];
-
-'''
-drivers=[webdriver.Ie(driver_paths['IE'])
-		];
-'''
-
-#drivers[1] = webdriver.Firefox()
 		
 for driver in drivers:
 
@@ -74,9 +72,9 @@ for driver in drivers:
 	'''
 	
 	element = driver.find_element_by_id("Username")
-	element.send_keys(usr)
+	element.send_keys(usrCurrent)
 	element = driver.find_element_by_id("Password")
-	element.send_keys(passwd)
+	element.send_keys(passwdCurrent)
 	driver.find_element_by_id("signInButton").click()
 
 accept_commands = True
