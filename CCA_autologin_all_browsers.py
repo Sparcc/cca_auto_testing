@@ -78,6 +78,13 @@ for driver in drivers:
 	element = driver.find_element_by_id("Password")
 	element.send_keys(passwd)
 	driver.find_element_by_id("signInButton").click()
+	
+	driver.find_element_by_class_name("showmyprofileddl").click()
+	driver.implicitly_wait(10)
+	driver.find_element_by_link_text("Switch outlet").click()
+	
+	driver.implicitly_wait(10)
+	driver.find_element_by_class_name("search").send_keys(outlet)
 
 accept_commands = True
 while accept_commands:
