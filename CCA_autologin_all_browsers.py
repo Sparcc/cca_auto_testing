@@ -78,6 +78,12 @@ for driver in drivers:
 	element = driver.find_element_by_id("Password")
 	element.send_keys(passwdCurrent)
 	driver.find_element_by_id("signInButton").click()
+	
+	if selectOutlet:
+		driver.find_element_by_class_name("showmyprofileddl").click()
+		driver.find_element_by_link_text("Switch outlet").click()
+		driver.find_element_by_class_name("search").send_keys(outlet)
+		driver.find_element_by_xpath('//*[@id="outletList"]/div/div/img').click()
 
 accept_commands = True
 while accept_commands:
