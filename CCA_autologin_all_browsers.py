@@ -15,7 +15,8 @@ passwd = {'promo-9193': '35Paxton',
 		};
 outlet = {'promo-9193': '2288416',
 		'promo-80': '2743206',
-		'cds-80': '5101222'
+		'cds-80': '5101222',
+		'cds-9193': '5116821'
 		};
 
 driver_paths = {'Chrome': 'C:\Selenium\chromedriver.exe',
@@ -25,7 +26,6 @@ driver_paths = {'Chrome': 'C:\Selenium\chromedriver.exe',
 
 #turn multi-browser login on/off
 singleBrowser = True
-designatedBrowser = driver_paths['Chrome'];
 selectOutlet = False
 #setting driver options
 profile = webdriver.FirefoxProfile()
@@ -44,15 +44,25 @@ drivers=[webdriver.Chrome(driver_paths['Chrome']),
 		webdriver.Ie(driver_paths['IE'])
 		];
 '''
+
 usrCurrent=usr['cds']
 passwdCurrent=passwd['cds']
+
+
 if singleBrowser:
-	drivers=[webdriver.Chrome(designatedBrowser)];
+	#drivers=[webdriver.Chrome(driver_paths['Chrome'])];
+	drivers=[webdriver.Edge(driver_paths['Edge'])]
+	#drivers=[webdriver.Firefox()]
 else:
 	drivers=[webdriver.Firefox(profile),
 		webdriver.Chrome(driver_paths['Chrome']),
 		webdriver.Edge(driver_paths['Edge'])
 		];
+
+'''
+drivers=[webdriver.Firefox()
+		];
+'''
 		
 for driver in drivers:
 
