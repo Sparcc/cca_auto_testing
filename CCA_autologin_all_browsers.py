@@ -50,8 +50,8 @@ passwdCurrent=passwd['cds']
 
 
 if singleBrowser:
-	#drivers=[webdriver.Chrome(driver_paths['Chrome'])];
-	drivers=[webdriver.Edge(driver_paths['Edge'])]
+	drivers=[webdriver.Chrome(driver_paths['Chrome'])];
+	#drivers=[webdriver.Edge(driver_paths['Edge'])]
 	#drivers=[webdriver.Firefox()]
 else:
 	drivers=[webdriver.Firefox(profile),
