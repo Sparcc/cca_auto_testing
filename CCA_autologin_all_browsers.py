@@ -85,8 +85,8 @@ for opt, arg in opts:
 		usrCurrent=usr[arg]
 		passwdCurrent=passwd[arg]
 		
-	#if opt in ('-o', '--outlet'):
-	#	designatedOutlet = arg
+	if opt in ('-o', '--outlet'):
+		designatedOutlet = arg
 print('finished getting arguments')
 
 if singleBrowser:
