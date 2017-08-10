@@ -37,7 +37,6 @@ designatedBrowser = 'chrome'
 designatedOutlet = ''
 usrCurrent=usr['webtestuser']
 passwdCurrent=passwd['webtestuser']
-drivers = []
 
 #setting driver options
 profile = webdriver.FirefoxProfile()
@@ -60,21 +59,25 @@ drivers=[webdriver.Chrome(driverPaths['Chrome']),
 print('getting arguments...')
 print(sys.argv)
 try:
-	opts, args = getopt.getopt(sys.argv[1:],"so:",['single','outlet='])
+	opts, args = getopt.getopt(sys.argv[1:],"s:o:S",['use=','outlet=','single'])
 except getopt.GetoptError as e:
 	print (str(e))
 	print (sys.argv[0], '<option>')
 	sys.exit(2)
-print(opts)
-print(args)	  
+print('opt: ', opts)
+print('args: ', args)	  
 for opt, arg in opts:
-	if opt in ('-s', '--single'):
+	if opt in ('-s', '--use'):
 		singleBrowser = True
+		print('arg is: ', arg)
+		designatedBrowser = arg
 		print('Now in single browser testing mode')
+		print('designatedBrowser is: ', designatedBrowser)
+	if opt in ('-S', '--single'):
+		singleBrowser = True
 	#if opt in ('-o', '--outlet'):
 	#	designatedOutlet = arg
 print('finished getting arguments')
-print('designatedOutlet is :', designatedOutlet)
 
 if singleBrowser:
 	if designatedBrowser == 'chrome':
@@ -110,6 +113,7 @@ for driver in drivers:
 	if 'error' in driver.title:
 		driver.find_element_by_id('moreInformationDropdownSpan').click()
 		driver.find_element_by_id('invalidcert_continue').click()
+		driver.implicitly_wait(5)#edge needs to wait
 
 	element = driver.find_element_by_id("Username")
 	element.send_keys(usrCurrent)
