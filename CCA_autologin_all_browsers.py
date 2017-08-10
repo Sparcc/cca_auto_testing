@@ -20,16 +20,17 @@ outlet = {'promo-9193': '2288416',
 		'cds-9193': '5116821'
 		};
 
-driver_paths = {'Chrome': 'C:\Selenium\chromedriver.exe',
+driverPaths = {'Chrome': 'C:\Selenium\chromedriver.exe',
 		'Edge': 'C:\Selenium\MicrosoftWebDriver.exe',
 		'IE': 'C:\Selenium\MicrosoftWebDriver.exe'
 		};
 
 #DEFAULTS
 #turn multi-browser login on/off
-singleBrowser = True
+singleBrowser = False
 selectOutlet = False
 designatedBrowser = 'chrome'
+designatedOutlet = ''
 usrCurrent=usr['cds']
 passwdCurrent=passwd['cds']
 
@@ -43,38 +44,42 @@ options.add_argument('--ignore-certificate-errors')
 #https://stackoverflow.com/questions/17625047/ie-and-chrome-not-working-with-selenium2-python
 
 '''
-drivers=[webdriver.Chrome(driver_paths['Chrome']),
+drivers=[webdriver.Chrome(driverPaths['Chrome']),
 		webdriver.Firefox(),
-		webdriver.Edge(driver_paths['Edge']),
-		webdriver.Ie(driver_paths['IE'])
+		webdriver.Edge(driverPaths['Edge']),
+		webdriver.Ie(driverPaths['IE'])
 		];
 '''
 
 #ARGUMENT HANDLING
-print (argv[0])
-'''
+print('getting arguments...')
+print(sys.argv)
 try:
-	opts, args = getopt.getopt(argv,"s",["single"])
-except getopt.GetoptError:
-	print (argv[0], '-s')
-      sys.exit(2)
+	opts, args = getopt.getopt(sys.argv[1:],"so:",['single','outlet='])
+except getopt.GetoptError as e:
+	print (str(e))
+	print (sys.argv[0], '<option>')
+	sys.exit(2)
 	  
 for opt, arg in opts:
 	if opt in ('-s', '--single'):
-		singleBrowser = False
-'''
+		singleBrowser = True
+		print('Now in single browser testing mode')
+	if opt in ('-o, '--outlet')
+		designatedOutlet = arg
+print('finished getting arguments')
 
 if singleBrowser:
 	if designatedBrowser == 'chrome':
-		drivers=[webdriver.Chrome(driver_paths['Chrome'])];
+		drivers=[webdriver.Chrome(driverPaths['Chrome'])];
 	if designatedBrowser == 'edge':
-		drivers=[webdriver.Edge(driver_paths['Edge'])]
+		drivers=[webdriver.Edge(driverPaths['Edge'])]
 	if designatedBrowser == 'firefox':
 		drivers=[webdriver.Firefox()]
 else:
 	drivers=[webdriver.Firefox(profile),
-		webdriver.Chrome(driver_paths['Chrome']),
-		webdriver.Edge(driver_paths['Edge'])
+		webdriver.Chrome(driverPaths['Chrome']),
+		webdriver.Edge(driverPaths['Edge'])
 		];
 
 '''
@@ -105,22 +110,27 @@ for driver in drivers:
 	element.send_keys(passwdCurrent)
 	driver.find_element_by_id("signInButton").click()
 	
-	'''
+	
 	if selectOutlet:
 		driver.find_element_by_class_name("showmyprofileddl").click()
 		driver.find_element_by_link_text("Switch outlet").click()
-		driver.find_element_by_class_name("search").send_keys(outlet)
+		driver.find_element_by_class_name("search").send_keys(outlet[designatedOutlet])
 		driver.find_element_by_xpath('//*[@id="outletList"]/div/div/img').click()
-	'''
+	
 
 accept_commands = True
-while accept_commands:
-	print('please enter a command')
-	command = input()
-	if 'quit' in command:
-		for driver in drivers:
-			driver.quit()
-			accept_commands = False
-	if 'running' in command:
-		for driver in drivers:
-			print(driver.name)
+try:
+	while accept_commands:
+		
+		print('Please enter a command:')
+		command = input()
+		if 'quit' in command.lower():
+			for driver in drivers:
+				driver.quit()
+				accept_commands = False
+		if 'running' in command:
+			for driver in drivers:
+				print(driver.name)
+	print('Program quiting')
+except:
+	print('Driver no longer available, quiting...')
