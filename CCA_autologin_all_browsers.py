@@ -58,11 +58,17 @@ drivers=[webdriver.Chrome(driverPaths['Chrome']),
 #ARGUMENT HANDLING
 print('getting arguments...')
 print(sys.argv)
+options = 's:o:Su:'
+longOptions = ['use=','outlet=','single','user=']
 try:
-	opts, args = getopt.getopt(sys.argv[1:],"s:o:S",['use=','outlet=','single'])
+	opts, args = getopt.getopt(sys.argv[1:],options,longOptions)
 except getopt.GetoptError as e:
 	print (str(e))
-	print (sys.argv[0], '<option>')
+	print ('General Usage: ', sys.argv[0], '<option>')
+	print('Options available (e.g. -s data or -S):', options)
+	print('Long options available (e.g. --single or --use data):', longOptions)
+	print ('current test users:')
+	print ('promo-9193','promo-80','cds','promo1075','cds',sep='\n')
 	sys.exit(2)
 print('opt: ', opts)
 print('args: ', args)	  
@@ -75,6 +81,10 @@ for opt, arg in opts:
 		print('designatedBrowser is: ', designatedBrowser)
 	if opt in ('-S', '--single'):
 		singleBrowser = True
+	if opt in ('-u', '--user'):
+		usrCurrent=usr[arg]
+		passwdCurrent=passwd[arg]
+		
 	#if opt in ('-o', '--outlet'):
 	#	designatedOutlet = arg
 print('finished getting arguments')
