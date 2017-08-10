@@ -8,11 +8,15 @@ import sys, getopt
 #testing 10-75 promotions
 usr = {'promo-9193': 'cutedog@xyz123.com',
 		'promo-80': 'myccatest123@gmail.com',
-		'cds': 'abcdxyz@outlook.com'
+		'cds': 'abcdxyz@outlook.com',
+		'promo-1075': 'myccatest123@gmail.com',
+		'webtestuser': 'webtestuser1'
 		};
 passwd = {'promo-9193': '35Paxton',
 		'promo-80': 'Mycca@11',
-		'cds': 'Mycca@11'
+		'cds': 'Mycca@11',
+		'promo-1075': 'Mycca@11',
+		'webtestuser': 'b'
 		};
 outlet = {'promo-9193': '2288416',
 		'promo-80': '2743206',
@@ -31,8 +35,8 @@ singleBrowser = False
 selectOutlet = False
 designatedBrowser = 'chrome'
 designatedOutlet = ''
-usrCurrent=usr['cds']
-passwdCurrent=passwd['cds']
+usrCurrent=usr['webtestuser']
+passwdCurrent=passwd['webtestuser']
 
 #setting driver options
 profile = webdriver.FirefoxProfile()
@@ -65,7 +69,7 @@ for opt, arg in opts:
 	if opt in ('-s', '--single'):
 		singleBrowser = True
 		print('Now in single browser testing mode')
-	if opt in ('-o, '--outlet')
+	if opt in ('-o', '--outlet'):
 		designatedOutlet = arg
 print('finished getting arguments')
 
