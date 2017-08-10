@@ -3,6 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import sys, getopt
 
 #testing 10-75 promotions
 usr = {'promo-9193': 'cutedog@xyz123.com',
@@ -24,13 +25,17 @@ driver_paths = {'Chrome': 'C:\Selenium\chromedriver.exe',
 		'IE': 'C:\Selenium\MicrosoftWebDriver.exe'
 		};
 
+#DEFAULTS
 #turn multi-browser login on/off
 singleBrowser = True
 selectOutlet = False
+designatedBrowser = 'chrome'
+usrCurrent=usr['cds']
+passwdCurrent=passwd['cds']
+
 #setting driver options
 profile = webdriver.FirefoxProfile()
 profile.accept_untrusted_certs = True
-
 options = webdriver.ChromeOptions()
 options.add_argument('--ignore-certificate-errors')
 		
@@ -45,14 +50,27 @@ drivers=[webdriver.Chrome(driver_paths['Chrome']),
 		];
 '''
 
-usrCurrent=usr['cds']
-passwdCurrent=passwd['cds']
-
+#ARGUMENT HANDLING
+print (argv[0])
+'''
+try:
+	opts, args = getopt.getopt(argv,"s",["single"])
+except getopt.GetoptError:
+	print (argv[0], '-s')
+      sys.exit(2)
+	  
+for opt, arg in opts:
+	if opt in ('-s', '--single'):
+		singleBrowser = False
+'''
 
 if singleBrowser:
-	drivers=[webdriver.Chrome(driver_paths['Chrome'])];
-	#drivers=[webdriver.Edge(driver_paths['Edge'])]
-	#drivers=[webdriver.Firefox()]
+	if designatedBrowser == 'chrome':
+		drivers=[webdriver.Chrome(driver_paths['Chrome'])];
+	if designatedBrowser == 'edge':
+		drivers=[webdriver.Edge(driver_paths['Edge'])]
+	if designatedBrowser == 'firefox':
+		drivers=[webdriver.Firefox()]
 else:
 	drivers=[webdriver.Firefox(profile),
 		webdriver.Chrome(driver_paths['Chrome']),
