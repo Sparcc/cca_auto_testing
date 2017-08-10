@@ -33,14 +33,14 @@ driverPaths = {'Chrome': 'C:\Selenium\chromedriver.exe',
 #turn multi-browser login on/off
 singleBrowser = False
 selectOutlet = False
-designatedBrowser = 'chrome'
+designatedBrowser = 'firefox'
 designatedOutlet = ''
 usrCurrent=usr['webtestuser']
 passwdCurrent=passwd['webtestuser']
 
 #setting driver options
 profile = webdriver.FirefoxProfile()
-profile.accept_untrusted_certs = True
+#profile.accept_untrusted_certs = True
 options = webdriver.ChromeOptions()
 options.add_argument('--ignore-certificate-errors')
 		
@@ -68,6 +68,8 @@ except getopt.GetoptError as e:
 for opt, arg in opts:
 	if opt in ('-s', '--single'):
 		singleBrowser = True
+		#if arg:
+		#	designatedBrowser = arg
 		print('Now in single browser testing mode')
 	if opt in ('-o', '--outlet'):
 		designatedOutlet = arg
