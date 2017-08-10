@@ -37,6 +37,7 @@ designatedBrowser = 'chrome'
 designatedOutlet = ''
 usrCurrent=usr['webtestuser']
 passwdCurrent=passwd['webtestuser']
+drivers = []
 
 #setting driver options
 profile = webdriver.FirefoxProfile()
@@ -64,14 +65,16 @@ except getopt.GetoptError as e:
 	print (str(e))
 	print (sys.argv[0], '<option>')
 	sys.exit(2)
-	  
+print(opts)
+print(args)	  
 for opt, arg in opts:
 	if opt in ('-s', '--single'):
 		singleBrowser = True
 		print('Now in single browser testing mode')
-	if opt in ('-o', '--outlet'):
-		designatedOutlet = arg
+	#if opt in ('-o', '--outlet'):
+	#	designatedOutlet = arg
 print('finished getting arguments')
+print('designatedOutlet is :', designatedOutlet)
 
 if singleBrowser:
 	if designatedBrowser == 'chrome':
