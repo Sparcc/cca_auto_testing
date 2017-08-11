@@ -21,7 +21,9 @@ passwd = {'promo-9193': '35Paxton',
 outlet = {'promo-9193': '2288416',
 		'promo-80': '2743206',
 		'cds-80': '5101222',
-		'cds-9193': '5116821'
+		'cds-9193': '5116821',
+		'cds-off-fo': '1137767',
+		'cds-on-fo': '5209236'
 		};
 
 driverPaths = {'Chrome': 'C:\Selenium\chromedriver.exe',
@@ -136,7 +138,9 @@ for driver in drivers:
 		driver.find_element_by_class_name("showmyprofileddl").click()
 		driver.find_element_by_link_text("Switch outlet").click()
 		driver.find_element_by_class_name("search").send_keys(outlet[designatedOutlet])
-		driver.find_element_by_xpath('//*[@id="outletList"]/div/div/img').click()
+		outletXpath='//*[@id="outletList"]/div[@data-outlet-number="'+outlet[designatedOutlet]+'"/div'
+		#//*[@id="outletList"]/div[1]/div
+		driver.find_element_by_xpath(outletXpath).click()
 	
 
 accept_commands = True
