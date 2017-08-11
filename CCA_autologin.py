@@ -35,8 +35,8 @@ singleBrowser = False
 selectOutlet = False
 designatedBrowser = 'chrome'
 designatedOutlet = ''
-usrCurrent=usr['webtestuser']
-passwdCurrent=passwd['webtestuser']
+usrCurrent=usr['cds']
+passwdCurrent=passwd['cds']
 
 #setting driver options
 profile = webdriver.FirefoxProfile()
@@ -152,6 +152,9 @@ try:
 		if 'running' in command:
 			for driver in drivers:
 				print(driver.name)
+		if 'leave' in command.lower():
+			accept_commands = False
+			print('Drivers are still running but script is ending')
 	print('Program quiting')
 except:
 	print('Driver no longer available, quiting...')
