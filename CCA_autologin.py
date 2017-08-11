@@ -32,8 +32,7 @@ driverPaths = {'Chrome': 'C:\Selenium\chromedriver.exe',
 		};
 
 #DEFAULTS
-#turn multi-browser login on/off
-singleBrowser = False
+singleBrowser = False #launch single browser
 selectOutlet = False
 designatedBrowser = 'chrome'
 designatedOutlet = ''
@@ -88,6 +87,7 @@ for opt, arg in opts:
 		passwdCurrent=passwd[arg]
 		
 	if opt in ('-o', '--outlet'):
+		selectOutlet = True
 		designatedOutlet = arg
 print('finished getting arguments')
 
@@ -135,10 +135,12 @@ for driver in drivers:
 	
 	
 	if selectOutlet:
+		print('Selecting an outlet....')
 		driver.find_element_by_class_name("showmyprofileddl").click()
 		driver.find_element_by_link_text("Switch outlet").click()
 		driver.find_element_by_class_name("search").send_keys(outlet[designatedOutlet])
-		outletXpath='//*[@id="outletList"]/div[@data-outlet-number="'+outlet[designatedOutlet]+'"/div'
+		driver.implicitly_wait(10)
+		outletXpath='//div[@data-outlet-number="'+outlet[designatedOutlet]+'-1"]/div/img'
 		#//*[@id="outletList"]/div[1]/div
 		driver.find_element_by_xpath(outletXpath).click()
 	
