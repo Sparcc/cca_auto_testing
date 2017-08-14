@@ -97,24 +97,9 @@ for opt, arg in opts:
 		designatedOutlet = arg
 print('finished getting arguments')
 
-if singleBrowser:
-	if designatedBrowser == 'chrome':
-		drivers=[webdriver.Chrome(driverPaths['Chrome'])];
-	if designatedBrowser == 'edge':
-		drivers=[webdriver.Edge(driverPaths['Edge'])]
-	if designatedBrowser == 'firefox':
-		drivers=[webdriver.Firefox()]
-else:
-	Process(target=driver, args=(webdriver.Chrome(driverPaths['Chrome']),)).start()
-	Process(target=driver, args=(webdriver.Edge(driverPaths['Edge'],)).start()
-	Process(target=driver, args=(webdriver.Firefox(),)).start()
-	
+def f(name):
+    print('hello', name)
 
-'''
-drivers=[webdriver.Firefox()
-		];
-'''
-		
 def executeSteps(driver):
 
 	#Different drivers have different functions!
@@ -147,11 +132,24 @@ def executeSteps(driver):
 		driver.find_element_by_class_name("search").send_keys(outlet[designatedOutlet])
 		driver.implicitly_wait(10)
 		outletXpath='//div[@data-outlet-number="'+outlet[designatedOutlet]+'-1"]/div/img'
-		#//*[@id="outletList"]/div[1]/div
 		driver.find_element_by_xpath(outletXpath).click()
-	
 
-accept_commands = True
+if singleBrowser:
+	if designatedBrowser == 'chrome':
+		drivers=[webdriver.Chrome(driverPaths['Chrome'])];
+	if designatedBrowser == 'edge':
+		drivers=[webdriver.Edge(driverPaths['Edge'])]
+	if designatedBrowser == 'firefox':
+		drivers=[webdriver.Firefox()]
+else:
+	if __name__ == '__main__':
+		Process(target=executeSteps, args=(webdriver.Chrome(driverPaths['Chrome']),)).start()
+		Process(target=executeSteps, args=(webdriver.Edge(driverPaths['Edge']),)).start()
+		Process(target=executeSteps, args=(webdriver.Firefox(),)).start()
+		#p = Process(target=f, args=('bob',))
+		#p.start()
+	
+accept_commands = False
 try:
 	while accept_commands:
 		
