@@ -18,7 +18,8 @@ passwd = {'promo-9193': '35Paxton',
 		'promo-1075': 'Mycca@11',
 		'webtestuser': 'b'
 		};
-outlet = {'promo-9193': '2288416',
+outlet = {'promo-9193-banners': '2288416',
+		'promo-9193-coupons': '2288416',
 		'promo-80': '2743206',
 		'cds-80': '5101222',
 		'cds-9193': '5116821',
