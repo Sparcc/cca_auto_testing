@@ -16,18 +16,18 @@ passwd = {'promo-9193': '35Paxton',
 		'promo-1075': 'Mycca@11',
 		'webtestuser': 'b'
 		};
-outlet = {'promo-9193-banners': '2288416',
+outlet = {'promo-9193-banners': '2288416', #need promo-9193
 		'promo-9193-coupons': '2288416',
 		'promo-1030-92': '1148617',
 		'promo-1020-91': '5204048',
-		'promo-40': '2743206',
+		'promo-40': '2743206', #need promo-1075
 		'promo-50': '2156416',
 		'promo-60': '2156672',
 		'promo-70': '2270933',
 		'promo-80': '2743206',
-		'cds-80': '5101222',
+		'cds-80': '5101222', #need cds
 		'cds-9193': '5116821',
-		'cds-off-fo': '1137767',
+		'cds-off-fo': '1137767', #need webtestuser
 		'cds-on-fo': '5209236'
 		};
 
