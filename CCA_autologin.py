@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import sys, getopt
+from multiprocessing import Process
 
 #test data
 usr = {'promo-9193': 'cutedog@xyz123.com',
@@ -104,17 +105,17 @@ if singleBrowser:
 	if designatedBrowser == 'firefox':
 		drivers=[webdriver.Firefox()]
 else:
-	drivers=[webdriver.Firefox(profile),
-		webdriver.Chrome(driverPaths['Chrome']),
-		webdriver.Edge(driverPaths['Edge'])
-		];
+	Process(target=driver, args=(webdriver.Chrome(driverPaths['Chrome']),)).start()
+	Process(target=driver, args=(webdriver.Edge(driverPaths['Edge'],)).start()
+	Process(target=driver, args=(webdriver.Firefox(),)).start()
+	
 
 '''
 drivers=[webdriver.Firefox()
 		];
 '''
 		
-for driver in drivers:
+def executeSteps(driver):
 
 	#Different drivers have different functions!
 	#Browsers also have different behavious
