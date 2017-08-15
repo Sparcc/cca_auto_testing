@@ -108,11 +108,6 @@ else:
 		webdriver.Chrome(driverPaths['Chrome']),
 		webdriver.Edge(driverPaths['Edge'])
 		];
-
-'''
-drivers=[webdriver.Firefox()
-		];
-'''
 		
 for driver in drivers:
 
