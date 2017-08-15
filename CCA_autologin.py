@@ -143,9 +143,10 @@ if singleBrowser:
 		drivers=[webdriver.Firefox()]
 else:
 	if __name__ == '__main__':
-		Process(target=executeSteps, args=(webdriver.Chrome(driverPaths['Chrome']),)).start()
-		Process(target=executeSteps, args=(webdriver.Edge(driverPaths['Edge']),)).start()
-		Process(target=executeSteps, args=(webdriver.Firefox(),)).start()
+		arg = webdriver.Chrome(driverPaths['Chrome'])
+		Process(target=executeSteps, args=(arg,)).start()
+		#Process(target=executeSteps, args=(webdriver.Edge(driverPaths['Edge']),)).start()
+		#Process(target=executeSteps, args=(webdriver.Firefox(),)).start()
 		#p = Process(target=f, args=('bob',))
 		#p.start()
 	
