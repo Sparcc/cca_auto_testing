@@ -5,6 +5,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import sys, getopt
 
+"""
+@author: Thomas Rea
+@company: RXP Services
+
+"""
+
 #test data
 usr = {'promo-9193': 'cutedog@xyz123.com',
 		'cds': 'abcdxyz@outlook.com',
