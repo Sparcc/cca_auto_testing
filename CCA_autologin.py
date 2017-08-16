@@ -38,7 +38,7 @@ outlet = {'promo-9193-banners': '2288416', #need promo-9193
 
 driverPaths = {'Chrome': 'C:\Selenium\chromedriver.exe',
 		'Edge': 'C:\Selenium\MicrosoftWebDriver.exe',
-		'IE': 'C:\Selenium\MicrosoftWebDriver.exe'
+		'IE': 'C:\Selenium\IEDriverServer.exe'
 		};
 
 #DEFAULTS
@@ -54,9 +54,9 @@ profile = webdriver.FirefoxProfile()
 profile.accept_untrusted_certs = True
 options = webdriver.ChromeOptions()
 options.add_argument('--ignore-certificate-errors')
-		
-#IE does not seem to work on proxy
-#https://stackoverflow.com/questions/17625047/ie-and-chrome-not-working-with-selenium2-python
+#cannot set desired capabilities of IE for reason (registry problem??)
+#ieCapabilities = DesiredCapabilities.INTERNETEXPLORER.copy()
+#ieCapabilities['ignoreProtectedModeSettings'] = True
 
 '''
 drivers=[webdriver.Chrome(driverPaths['Chrome']),
@@ -95,7 +95,6 @@ for opt, arg in opts:
 	if opt in ('-u', '--user'):
 		usrCurrent=usr[arg]
 		passwdCurrent=passwd[arg]
-		
 	if opt in ('-o', '--outlet'):
 		selectOutlet = True
 		designatedOutlet = arg
@@ -108,6 +107,8 @@ if singleBrowser:
 		drivers=[webdriver.Edge(driverPaths['Edge'])]
 	if designatedBrowser == 'firefox':
 		drivers=[webdriver.Firefox()]
+	if designatedBrowser == 'IE':
+		drivers=[webdriver.Ie(driverPaths['IE'])]
 else:
 	drivers=[webdriver.Firefox(profile),
 		webdriver.Chrome(driverPaths['Chrome']),
@@ -126,12 +127,23 @@ for driver in drivers:
 	#driver.implicitly_wait(10)
 	driver.get("https://myccadevau-promo.aus.ccamatil.com/login")
 	
-	#trust untrusted cert in Edge
+	#trust untrusted cert in Edge (could use desired capabilities instead)
 	if 'error' in driver.title:
 		driver.find_element_by_id('moreInformationDropdownSpan').click()
 		driver.find_element_by_id('invalidcert_continue').click()
 		driver.implicitly_wait(5)#edge needs to wait
-
+		
+	#trust untrusted cert in IE
+	if designatedBrowser == 'IE':
+		WebDriverWait(driver, 5).until(
+			EC.presence_of_element_located((By.ID, 'invalidcert_mainTitle')))
+	if 'secure' in driver.title:
+		xpath='//td//span[@id="moreInfoContainer"]/a'
+		driver.find_element_by_xpath(xpath).click()
+		xpath='//a[@id="overridelink"]'
+		driver.find_element_by_xpath(xpath).click()
+	
+		
 	element = driver.find_element_by_id("Username")
 	element.send_keys(usrCurrent)
 	element = driver.find_element_by_id("Password")
@@ -145,9 +157,9 @@ for driver in drivers:
 		driver.find_element_by_link_text("Switch outlet").click()
 		driver.find_element_by_class_name("search").send_keys(outlet[designatedOutlet])
 		driver.implicitly_wait(10)
-		outletXpath='//div[@data-outlet-number="'+outlet[designatedOutlet]+'-1"]/div/img'
+		xpath='//div[@data-outlet-number="'+outlet[designatedOutlet]+'-1"]/div/img'
 		#//*[@id="outletList"]/div[1]/div
-		driver.find_element_by_xpath(outletXpath).click()
+		driver.find_element_by_xpath(xpath).click()
 	
 
 accept_commands = True
