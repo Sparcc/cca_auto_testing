@@ -110,7 +110,7 @@ if singleBrowser:
 	if designatedBrowser == 'IE':
 		drivers=[webdriver.Ie(driverPaths['IE'])]
 else:
-	drivers=[webdriver.Firefox(),
+	drivers=[webdriver.Firefox(profile),
 		webdriver.Chrome(driverPaths['Chrome']),
 		webdriver.Edge(driverPaths['Edge']),
 		webdriver.Ie(driverPaths['IE'])
