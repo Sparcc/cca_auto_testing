@@ -112,7 +112,8 @@ if singleBrowser:
 else:
 	drivers=[webdriver.Firefox(profile),
 		webdriver.Chrome(driverPaths['Chrome']),
-		webdriver.Edge(driverPaths['Edge'])
+		webdriver.Edge(driverPaths['Edge']),
+		webdriver.Ie(driverPaths['IE'])
 		];
 		
 for driver in drivers:
