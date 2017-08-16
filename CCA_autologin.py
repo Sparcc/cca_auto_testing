@@ -8,7 +8,6 @@ import sys, getopt
 """
 @author: Thomas Rea
 @company: RXP Services
-
 """
 
 #test data
