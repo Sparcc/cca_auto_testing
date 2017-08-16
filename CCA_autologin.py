@@ -48,15 +48,19 @@ designatedBrowser = 'chrome'
 designatedOutlet = ''
 usrCurrent=usr['cds']
 passwdCurrent=passwd['cds']
+#drivers = []
 
 #setting driver options
 profile = webdriver.FirefoxProfile()
 profile.accept_untrusted_certs = True
 options = webdriver.ChromeOptions()
 options.add_argument('--ignore-certificate-errors')
+#HOW DO I GET CAPABILITIES TO WORK??
 #cannot set desired capabilities of IE for reason (registry problem??)
 #ieCapabilities = DesiredCapabilities.INTERNETEXPLORER.copy()
 #ieCapabilities['ignoreProtectedModeSettings'] = True
+#firefoxCapabilities = DesiredCapabilities.FIREFOX.copy()
+#firefoxCapabilities['acceptInsecureCerts'] = True
 
 '''
 drivers=[webdriver.Chrome(driverPaths['Chrome']),
