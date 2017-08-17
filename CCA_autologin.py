@@ -147,6 +147,7 @@ for driver in drivers:
 		driver.find_element_by_xpath(xpath).click()
 		xpath='//a[@id="overridelink"]'
 		driver.find_element_by_xpath(xpath).click()
+		driver.implicitly_wait(5)
 	
 		
 	element = driver.find_element_by_id("Username")
@@ -158,13 +159,13 @@ for driver in drivers:
 	
 	if selectOutlet:
 		print('Selecting an outlet....')
-		element = WebDriverWait(driver, 5).until(
+		element = WebDriverWait(driver, 30).until(
 			EC.presence_of_element_located((By.ID, 'showmyprofileddl')))
-		element.click()
+		element.click()#wait for profile dropdwon to load
 		#driver.find_element_by_class_name("showmyprofileddl").click()
 		driver.find_element_by_link_text("Switch outlet").click()
 		driver.find_element_by_class_name("search").send_keys(outlet[designatedOutlet])
-		driver.implicitly_wait(10)
+		driver.implicitly_wait(10)#wait for outlet to load
 		xpath='//div[@data-outlet-number="'+outlet[designatedOutlet]+'-1"]/div/img'
 		#//*[@id="outletList"]/div[1]/div
 		driver.find_element_by_xpath(xpath).click()
