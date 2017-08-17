@@ -111,7 +111,7 @@ if singleBrowser:
 		drivers=[webdriver.Edge(driverPaths['Edge'])]
 	if designatedBrowser == 'firefox':
 		drivers=[webdriver.Firefox()]
-	if designatedBrowser == 'IE':
+	if designatedBrowser == 'ie':
 		drivers=[webdriver.Ie(driverPaths['IE'])]
 else:
 	drivers=[webdriver.Firefox(profile),
@@ -158,7 +158,10 @@ for driver in drivers:
 	
 	if selectOutlet:
 		print('Selecting an outlet....')
-		driver.find_element_by_class_name("showmyprofileddl").click()
+		element = WebDriverWait(driver, 5).until(
+			EC.presence_of_element_located((By.ID, 'showmyprofileddl')))
+		element.click()
+		#driver.find_element_by_class_name("showmyprofileddl").click()
 		driver.find_element_by_link_text("Switch outlet").click()
 		driver.find_element_by_class_name("search").send_keys(outlet[designatedOutlet])
 		driver.implicitly_wait(10)
