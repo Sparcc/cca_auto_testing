@@ -159,9 +159,9 @@ for driver in drivers:
 	
 	if selectOutlet:
 		print('Selecting an outlet....')
-		element = WebDriverWait(driver, 30).until(
-			EC.presence_of_element_located((By.ID, 'showmyprofileddl')))
-		element.click()#wait for profile dropdwon to load
+		element = WebDriverWait(driver, 60).until(
+			EC.presence_of_element_located((By.XPATH, '//a[@class="dropdown-toggle showmyprofileddl"]')))
+		element.click()#wait for profile dropdwon to load and click
 		#driver.find_element_by_class_name("showmyprofileddl").click()
 		driver.find_element_by_link_text("Switch outlet").click()
 		driver.find_element_by_class_name("search").send_keys(outlet[designatedOutlet])
