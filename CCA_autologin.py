@@ -21,7 +21,8 @@ passwd = {'promo-9193': '35Paxton',
 		'promo-1075': 'Mycca@11',
 		'webtestuser': 'b'
 		};
-outlet = {'promo-9193-banners': '2288416', #need promo-9193
+outlet = {'promo-9192-banners': '2288416', #need promo-9193
+		'promo-9293': '2156999',
 		'promo-9193-coupons': '2288416',
 		'promo-1030-92': '1148617',
 		'promo-1020-91': '5204048',
@@ -48,6 +49,7 @@ designatedBrowser = 'chrome'
 designatedOutlet = ''
 usrCurrent=usr['cds']
 passwdCurrent=passwd['cds']
+testServerBaseURL='https://myccadevau-promo.aus.ccamatil.com'
 #drivers = []
 
 #setting driver options
@@ -102,6 +104,10 @@ for opt, arg in opts:
 	if opt in ('-o', '--outlet'):
 		selectOutlet = True
 		designatedOutlet = arg
+	if opt in ('-d', '--std'):
+	testServerBaseURL='https://myccadevau.aus.ccamatil.com'
+	print('Using standard dev server...warning! xpaths might be different.')
+		
 print('finished getting arguments')
 
 if singleBrowser:
@@ -128,9 +134,9 @@ for driver in drivers:
 
 	#driver.maximize_window()
 	#driver.implicitly_wait(10)
-	driver.get("https://myccadevau-promo.aus.ccamatil.com/")
+	driver.get(testServerBaseURL)
 	#driver.implicitly_wait(10)
-	driver.get("https://myccadevau-promo.aus.ccamatil.com/login")
+	driver.get(testServerBaseURL+'/login')
 	
 	#trust untrusted cert in Edge (could use desired capabilities instead)
 	if 'error' in driver.title:
