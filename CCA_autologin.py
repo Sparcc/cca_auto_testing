@@ -76,7 +76,7 @@ drivers=[webdriver.Chrome(driverPaths['Chrome']),
 print('getting arguments...')
 print(sys.argv)
 options = 's:o:Su:'
-longOptions = ['use=','outlet=','single','user=']
+longOptions = ['use=','outlet=','single','user=','std']
 try:
 	opts, args = getopt.getopt(sys.argv[1:],options,longOptions)
 except getopt.GetoptError as e:
