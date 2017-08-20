@@ -105,8 +105,8 @@ for opt, arg in opts:
 		selectOutlet = True
 		designatedOutlet = arg
 	if opt in ('-d', '--std'):
-	testServerBaseURL='https://myccadevau.aus.ccamatil.com'
-	print('Using standard dev server...warning! xpaths might be different.')
+		testServerBaseURL='https://myccadevau.aus.ccamatil.com'
+		print('Using standard dev server...warning! xpaths might be different.')
 		
 print('finished getting arguments')
 
