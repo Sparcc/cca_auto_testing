@@ -22,14 +22,15 @@ passwd = {'promo-9193': '35Paxton',
 		'webtestuser': 'b'
 		};
 outlet = {'promo-9192-banners': '2288416', #need promo-9193
+		'promo-93': '5772504',
 		'promo-9293': '2156999',
 		'promo-9193-coupons': '2288416',
-		'promo-1030-92': '1148617',
+		'promo-1030-92': '1148617', #need promo-1075
 		'promo-1020-91': '5204048',
-		'promo-40': '2743206', #need promo-1075
-		'promo-50': '2156416',
-		'promo-60': '2156672',
-		'promo-70': '2270933',
+		'promo-40': '2743206',
+		'promo-50': '2156416', #need webtestuser
+		'promo-60': '2156672', #need webtestuser
+		'promo-70': '2270933', #need webtestuser
 		'promo-80': '2743206',
 		'cds-80': '5101222', #need cds
 		'cds-9193': '5116821',
@@ -165,11 +166,17 @@ for driver in drivers:
 	
 	if selectOutlet:
 		print('Selecting an outlet....')
-		element = WebDriverWait(driver, 60).until(
+		element = WebDriverWait(driver, 10).until(
 			EC.presence_of_element_located((By.XPATH, '//a[@class="dropdown-toggle showmyprofileddl"]')))
 		element.click()#wait for profile dropdwon to load and click
 		#driver.find_element_by_class_name("showmyprofileddl").click()
 		driver.find_element_by_link_text("Switch outlet").click()
+		#element = WebDriverWait(driver, 10).until(
+		#	EC.presence_of_element_located((By.LINK_TEXT, 'Switch Outlet')))
+		#element.click()
+		#element = WebDriverWait(driver, 10).until(
+		#	EC.presence_of_element_located((By.XPATH, 'Switch Outlet')))
+		#element.click()
 		driver.find_element_by_class_name("search").send_keys(outlet[designatedOutlet])
 		driver.implicitly_wait(10)#wait for outlet to load
 		xpath='//div[@data-outlet-number="'+outlet[designatedOutlet]+'-1"]/div/img'
@@ -190,7 +197,7 @@ try:
 		if 'running' in command:
 			for driver in drivers:
 				print(driver.name)
-		if 'leave' in command.lower():
+		if ('leave','release') in command.lower():
 			accept_commands = False
 			print('Drivers are still running but script is ending')
 	print('Program quiting')
