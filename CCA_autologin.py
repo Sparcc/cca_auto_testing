@@ -76,8 +76,8 @@ drivers=[webdriver.Chrome(driverPaths['Chrome']),
 #ARGUMENT HANDLING
 print('getting arguments...')
 print(sys.argv)
-options = 's:o:Su:'
-longOptions = ['use=','outlet=','single','user=','std']
+options = 's:o:Su:d:'
+longOptions = ['use=','outlet=','single','user=','std','direct_outlet=']
 try:
 	opts, args = getopt.getopt(sys.argv[1:],options,longOptions)
 except getopt.GetoptError as e:
@@ -100,14 +100,17 @@ for opt, arg in opts:
 	if opt in ('-S', '--single'):
 		singleBrowser = True
 	if opt in ('-u', '--user'):
-		usrCurrent=usr[arg]
-		passwdCurrent=passwd[arg]
+		usrCurrent = usr[arg]
+		passwdCurrent = passwd[arg]
 	if opt in ('-o', '--outlet'):
 		selectOutlet = True
 		designatedOutlet = arg
-	if opt in ('-d', '--std'):
-		testServerBaseURL='https://myccadevau.aus.ccamatil.com'
+	if opt in ('--std'):
+		testServerBaseURL = 'https://myccadevau.aus.ccamatil.com'
 		print('Using standard dev server...warning! xpaths might be different.')
+	if opt in ('-d', '--direct_outlet'):
+		outlet['custom'] = arg
+		designatedOutlet = 'custom'
 		
 print('finished getting arguments')
 
