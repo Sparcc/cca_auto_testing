@@ -83,17 +83,16 @@ try:
 except getopt.GetoptError as e:
 	print (str(e))
 	print ('General Usage: ', sys.argv[0], '<option>')
-	print('Options available (e.g. -s data or -S):', options)
+	print('Options available (e.g. -s Chrome or -S <---(Chrome is designatedBrowser by default):', options)
 	print('Long options available (e.g. --single or --use data):', longOptions)
-	print ('current test users:')
-	print ('promo-9193','promo-80','cds','promo1075','cds',sep='\n')
+	print ('current test users \'KEY\': \'VALUE\'')
+	print (usr)
 	sys.exit(2)
 print('opt: ', opts)
 print('args: ', args)	  
 for opt, arg in opts:
 	if opt in ('-s', '--use'):
 		singleBrowser = True
-		print('arg is: ', arg)
 		designatedBrowser = arg
 		print('Now in single browser testing mode')
 		print('designatedBrowser is: ', designatedBrowser)
@@ -113,7 +112,8 @@ for opt, arg in opts:
 		designatedOutlet = 'custom'
 		
 print('finished getting arguments')
-
+if (not singleBrowser):
+	print('Warning! multi-browser mode is unstable for outlet selection. Use Chrome or IE instead')
 if singleBrowser:
 	if designatedBrowser == 'chrome':
 		drivers=[webdriver.Chrome(driverPaths['Chrome'])];
