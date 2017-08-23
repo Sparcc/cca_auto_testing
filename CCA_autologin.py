@@ -28,9 +28,9 @@ outlet = {'promo-9192-banners': '2288416', #need promo-9193
 		'promo-1030-92': '1148617', #need promo-1075
 		'promo-1020-91': '5204048',
 		'promo-40': '2743206',
-		'promo-50': '2156416', #need webtestuser
-		'promo-60': '2156672', #need webtestuser
-		'promo-70': '2270933', #need webtestuser
+		'promo-50': '2156416', #assortment deal - need webtestuser
+		'promo-60': '2156672', #assortment deal - need webtestuser
+		'promo-70': '2270933', #assortment deal - need webtestuser
 		'promo-80': '2743206',
 		'cds-80': '5101222', #need cds
 		'cds-9193': '5116821',
