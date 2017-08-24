@@ -45,13 +45,15 @@ driverPaths = {'Chrome': 'C:\Selenium\chromedriver.exe',
 
 #DEFAULTS
 singleBrowser = False #launch single browser
-selectOutlet = False
-designatedBrowser = 'chrome'
-designatedOutlet = ''
-usrCurrent=usr['cds']
-passwdCurrent=passwd['cds']
-testServerBaseURL='https://myccadevau-promo.aus.ccamatil.com'
-#drivers = []
+selectOutlet = False #enables outlet selection
+designatedBrowser = 'chrome' #default browser in single browser mode
+designatedOutlet = '' #default outlet when outlet selection enabled
+designatedUser = usr['cds'] #default user is one that tests cds system
+passwdCurrent = passwd['cds'] #default password is for user that tests cds system
+testServerBaseURL = 'https://myccadevau-promo.aus.ccamatil.com' #promo dev is default environment
+runDrivers = True #enables automation
+acceptCommands = True #allows the use of commands to control drivers after automation has completed
+drivers = [] #initial list of drivers
 
 #setting driver options
 profile = webdriver.FirefoxProfile()
@@ -75,18 +77,14 @@ drivers=[webdriver.Chrome(driverPaths['Chrome']),
 
 #ARGUMENT HANDLING
 print('getting arguments...')
-print(sys.argv)
-options = 's:o:Su:d:'
-longOptions = ['use=','outlet=','single','user=','std','direct_outlet=']
+options = 's:o:Su:d:i'
+longOptions = ['use=','outlet=','single','user=','std','direct_outlet=','info']
 try:
 	opts, args = getopt.getopt(sys.argv[1:],options,longOptions)
 except getopt.GetoptError as e:
 	print (str(e))
-	print ('General Usage: ', sys.argv[0], '<option>')
-	print('Options available (e.g. -s Chrome or -S <---(Chrome is designatedBrowser by default):', options)
-	print('Long options available (e.g. --single or --use data):', longOptions)
-	print ('current test users \'KEY\': \'VALUE\'')
-	print (usr)
+	print ('General Usage: ', sys.argv[0], '<-option(single)> <--long_option')
+	print ('Use -i option for more usage guides and lists of test data')
 	sys.exit(2)
 print('opt: ', opts)
 print('args: ', args)	  
@@ -99,7 +97,7 @@ for opt, arg in opts:
 	if opt in ('-S', '--single'):
 		singleBrowser = True
 	if opt in ('-u', '--user'):
-		usrCurrent = usr[arg]
+		designatedUser = usr[arg]
 		passwdCurrent = passwd[arg]
 	if opt in ('-o', '--outlet'):
 		selectOutlet = True
@@ -108,30 +106,49 @@ for opt, arg in opts:
 		testServerBaseURL = 'https://myccadevau.aus.ccamatil.com'
 		print('Using standard dev server...warning! xpaths might be different.')
 	if opt in ('-d', '--direct_outlet'):
+		selectOutlet = True
 		outlet['custom'] = arg
 		designatedOutlet = 'custom'
-		
-print('finished getting arguments')
-if (not singleBrowser):
+	if opt in ('-i', '--info'):
+		runDrivers = False
+		acceptCommands = False
+		print('------------------------------------------------------')
+		print('Options available: (e.g. -s Chrome or -S <---(Chrome is designatedBrowser by default):')
+		print(options)
+		print('\nLong options available (e.g. --single or --use Chrome):')
+		print(longOptions)
+		print('\ncurrent test users (password is entered automatically): ')
+		for u in usr:
+			print(u, ' --> ', usr[u])
+		print('\nFor use of outlet number directly use -d or --direct_outlet options.')
+		print('Outlets available:')
+		for o in outlet:
+			print(o, ' --> ', outlet[o])
+#debug output statements
+#print('outlet: ',outlet)
+#print('designatedOutlet: ',designatedOutlet)
+print('\nFinished getting arguments...')
+if (not singleBrowser and designatedOutlet !=''):
 	print('Warning! multi-browser mode is unstable for outlet selection. Use Chrome or IE instead')
-if singleBrowser:
-	if designatedBrowser == 'chrome':
-		drivers=[webdriver.Chrome(driverPaths['Chrome'])];
-	if designatedBrowser == 'edge':
-		drivers=[webdriver.Edge(driverPaths['Edge'])]
-	if designatedBrowser == 'firefox':
-		drivers=[webdriver.Firefox()]
-	if designatedBrowser == 'ie':
-		drivers=[webdriver.Ie(driverPaths['IE'])]
-else:
-	drivers=[webdriver.Firefox(profile),
-		webdriver.Chrome(driverPaths['Chrome']),
-		webdriver.Edge(driverPaths['Edge']),
-		webdriver.Ie(driverPaths['IE'])
-		];
+if runDrivers == True:	
+	if singleBrowser:
+		if designatedBrowser == 'chrome':
+			drivers=[webdriver.Chrome(driverPaths['Chrome'])];
+		if designatedBrowser == 'edge':
+			drivers=[webdriver.Edge(driverPaths['Edge'])]
+		if designatedBrowser == 'firefox':
+			drivers=[webdriver.Firefox(profile)]
+		if designatedBrowser == 'ie':
+			drivers=[webdriver.Ie(driverPaths['IE'])]
+	else:
+		drivers=[webdriver.Firefox(profile),
+			webdriver.Chrome(driverPaths['Chrome']),
+			webdriver.Edge(driverPaths['Edge']),
+			webdriver.Ie(driverPaths['IE'])
+			];
 		
 for driver in drivers:
-
+	
 	#Different drivers have different functions!
 	#Browsers also have different behavious
 	#Keep in mind driver execution order
@@ -161,14 +178,14 @@ for driver in drivers:
 	
 		
 	element = driver.find_element_by_id("Username")
-	element.send_keys(usrCurrent)
+	element.send_keys(designatedUser)
 	element = driver.find_element_by_id("Password")
 	element.send_keys(passwdCurrent)
 	driver.find_element_by_id("signInButton").click()
 	
 	
 	if selectOutlet:
-		print('Selecting an outlet....')
+		print('\nSelecting an outlet....')
 		element = WebDriverWait(driver, 10).until(
 			EC.presence_of_element_located((By.XPATH, '//a[@class="dropdown-toggle showmyprofileddl"]')))
 		element.click()#wait for profile dropdwon to load and click
@@ -185,12 +202,9 @@ for driver in drivers:
 		xpath='//div[@data-outlet-number="'+outlet[designatedOutlet]+'-1"]/div/img'
 		#//*[@id="outletList"]/div[1]/div
 		driver.find_element_by_xpath(xpath).click()
-	
-
-accept_commands = True
-try:
-	while accept_commands:
 		
+try:
+	while acceptCommands:
 		print('Please enter a command:')
 		command = input()
 		if 'quit' in command.lower():
@@ -203,6 +217,6 @@ try:
 		if ('leave','release') in command.lower():
 			accept_commands = False
 			print('Drivers are still running but script is ending')
-	print('Program quiting')
+	print('\nProgram quiting...\n')
 except:
-	print('Driver no longer available, quiting...')
+	print('\nDriver no longer available, quiting...\n')
