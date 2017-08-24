@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import sys, getopt
+import os
 
 """
 @author: Thomas Rea
@@ -54,6 +55,8 @@ testServerBaseURL = 'https://myccadevau-promo.aus.ccamatil.com' #promo dev is de
 runDrivers = True #enables automation
 acceptCommands = True #allows the use of commands to control drivers after automation has completed
 drivers = [] #initial list of drivers
+debugging = False
+clear = "\n" * 100 #screen clearer
 
 #setting driver options
 profile = webdriver.FirefoxProfile()
@@ -86,8 +89,9 @@ except getopt.GetoptError as e:
 	print ('General Usage: ', sys.argv[0], '<-option(single)> <--long_option')
 	print ('Use -i option for more usage guides and lists of test data')
 	sys.exit(2)
-print('opt: ', opts)
-print('args: ', args)	  
+if debugging:
+	print('opt: ', opts)
+	print('args: ', args)	  
 for opt, arg in opts:
 	if opt in ('-s', '--use'):
 		singleBrowser = True
@@ -218,5 +222,9 @@ try:
 			accept_commands = False
 			print('Drivers are still running but script is ending')
 	print('\nProgram quiting...\n')
+	if (runDrivers):
+		print(clear)
 except:
 	print('\nDriver no longer available, quiting...\n')
+	if (runDrivers):
+		print(clear)
