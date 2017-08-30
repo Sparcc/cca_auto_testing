@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import sys, getopt
 import os
+import sqlite3
 
 """
 @author: Thomas Rea
@@ -12,32 +13,22 @@ import os
 """
 
 #test data
-usr = {'promo-9193': 'cutedog@xyz123.com',
-		'cds': 'abcdxyz@outlook.com',
-		'promo-1075': 'myccatest123@gmail.com',
-		'webtestuser': 'webtestuser1'
-		};
-passwd = {'promo-9193': '35Paxton',
-		'cds': 'Mycca@11',
-		'promo-1075': 'Mycca@11',
-		'webtestuser': 'b'
-		};
-outlet = {'promo-9192-banners': '2288416', #need promo-9193
-		'promo-93': '5772504',
-		'promo-9293': '2156999',
-		'promo-9193-coupons': '2288416',
-		'promo-1030-92': '1148617', #need promo-1075
-		'promo-1020-91': '5204048',
-		'promo-40': '2743206',
-		'promo-50': '2156416', #assortment deal - need webtestuser
-		'promo-60': '2156672', #assortment deal - need webtestuser
-		'promo-70': '2270933', #assortment deal - need webtestuser
-		'promo-80': '2743206',
-		'cds-80': '5101222', #need cds
-		'cds-9193': '5116821',
-		'cds-off-fo': '1137767', #need webtestuser
-		'cds-on-fo': '5209236'
-		};
+print('\nloading test data...')
+user = {}
+password = {}
+outlet = {}
+requires = {}
+conn = sqlite3.connect('../db/cca_test_data.db')
+c = conn.cursor()
+for row in c.execute('SELECT alias, username, password FROM user'):
+	user[row[0]] = row[1]
+	password[row[0]] = row[2]
+for row in c.execute('SELECT alias, number FROM outlet'):
+	outlet[row[0]] = row[1]
+for row in c.execute('SELECT alias, userAlias FROM outlet'):
+	requires[row[0]] = row[1]
+
+conn.close()
 
 driverPaths = {'Chrome': 'C:\Selenium\chromedriver.exe',
 		'Edge': 'C:\Selenium\MicrosoftWebDriver.exe',
@@ -49,8 +40,8 @@ singleBrowser = False #launch single browser
 selectOutlet = False #enables outlet selection
 designatedBrowser = 'chrome' #default browser in single browser mode
 designatedOutlet = '' #default outlet when outlet selection enabled
-designatedUser = usr['cds'] #default user is one that tests cds system
-passwdCurrent = passwd['cds'] #default password is for user that tests cds system
+designatedUser = user['cds'] #default user is one that tests cds system
+passwordCurrent = password['cds'] #default password is for user that tests cds system
 testServerBaseURL = 'https://myccadevau-promo.aus.ccamatil.com' #promo dev is default environment
 runDrivers = True #enables automation
 acceptCommands = True #allows the use of commands to control drivers after automation has completed
@@ -91,43 +82,47 @@ except getopt.GetoptError as e:
 	sys.exit(2)
 if debugging:
 	print('opt: ', opts)
-	print('args: ', args)	  
-for opt, arg in opts:
-	if opt in ('-s', '--use'):
-		singleBrowser = True
-		designatedBrowser = arg
-		print('Now in single browser testing mode')
-		print('designatedBrowser is: ', designatedBrowser)
-	if opt in ('-S', '--single'):
-		singleBrowser = True
-	if opt in ('-u', '--user'):
-		designatedUser = usr[arg]
-		passwdCurrent = passwd[arg]
-	if opt in ('-o', '--outlet'):
-		selectOutlet = True
-		designatedOutlet = arg
-	if opt in ('--std'):
-		testServerBaseURL = 'https://myccadevau.aus.ccamatil.com'
-		print('Using standard dev server...warning! xpaths might be different.')
-	if opt in ('-d', '--direct_outlet'):
-		selectOutlet = True
-		outlet['custom'] = arg
-		designatedOutlet = 'custom'
-	if opt in ('-i', '--info'):
-		runDrivers = False
-		acceptCommands = False
-		print('------------------------------------------------------')
-		print('Options available: (e.g. -s Chrome or -S <---(Chrome is designatedBrowser by default):')
-		print(options)
-		print('\nLong options available (e.g. --single or --use Chrome):')
-		print(longOptions)
-		print('\ncurrent test users (password is entered automatically): ')
-		for u in usr:
-			print(u, ' --> ', usr[u])
-		print('\nFor use of outlet number directly use -d or --direct_outlet options.')
-		print('Outlets available:')
-		for o in outlet:
-			print(o, ' --> ', outlet[o])
+	print('args: ', args)
+if not debugging:	
+	for opt, arg in opts:
+		if opt in ('-s', '--use'):
+			singleBrowser = True
+			designatedBrowser = arg
+			print('Now in single browser testing mode')
+			print('designatedBrowser is: ', designatedBrowser)
+		if opt in ('-S', '--single'):
+			singleBrowser = True
+		if opt in ('-u', '--user'):
+			designatedUser = user[arg]
+			passwordCurrent = password[arg]
+		if opt in ('-o', '--outlet'):
+			selectOutlet = True
+			designatedOutlet = arg
+		if opt in ('--std'):
+			testServerBaseURL = 'https://myccadevau.aus.ccamatil.com'
+			print('Using standard dev server...warning! xpaths might be different.')
+		if opt in ('-d', '--direct_outlet'):
+			selectOutlet = True
+			outlet['custom'] = arg
+			designatedOutlet = 'custom'
+		if opt in ('-i', '--info'):
+			runDrivers = False
+			acceptCommands = False
+			print('------------------------------------------------------')
+			print('Options available: (e.g. -s Chrome or -S <---(Chrome is designatedBrowser by default):')
+			print(options)
+			print('\nLong options available (e.g. --single or --use Chrome):')
+			print(longOptions)
+			print('\ncurrent test users (password is entered automatically): ')
+			for u in user:
+				print(u, ' --> ', user[u])
+			print('\nFor use of outlet number directly use -d or --direct_outlet options.')
+			print('Outlets available:')
+			for o in outlet:
+				print(o, ' --> ', outlet[o])
+			print('\noutlet to user requirements:')
+			for r in requires:
+				print(r, ' --> ', outlet[r])
 #debug output statements
 #print('outlet: ',outlet)
 #print('designatedOutlet: ',designatedOutlet)
@@ -184,7 +179,7 @@ for driver in drivers:
 	element = driver.find_element_by_id("Username")
 	element.send_keys(designatedUser)
 	element = driver.find_element_by_id("Password")
-	element.send_keys(passwdCurrent)
+	element.send_keys(passwordCurrent)
 	driver.find_element_by_id("signInButton").click()
 	
 	
