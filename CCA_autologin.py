@@ -15,12 +15,14 @@ import os
 usr = {'promo-9193': 'cutedog@xyz123.com',
 		'cds': 'abcdxyz@outlook.com',
 		'promo-1075': 'myccatest123@gmail.com',
-		'webtestuser': 'webtestuser1'
+		'webtestuser': 'webtestuser1',
+		'admycca': 'admycca@outlook.com'
 		};
 passwd = {'promo-9193': '35Paxton',
 		'cds': 'Mycca@11',
 		'promo-1075': 'Mycca@11',
-		'webtestuser': 'b'
+		'webtestuser': 'b',
+		'admycca': 'Mycca@11'
 		};
 outlet = {'promo-9192-banners': '2288416', #need promo-9193
 		'promo-93': '5772504',
@@ -35,7 +37,7 @@ outlet = {'promo-9192-banners': '2288416', #need promo-9193
 		'promo-80': '2743206',
 		'cds-80': '5101222', #need cds
 		'cds-9193': '5116821',
-		'cds-off-fo': '1137767', #need webtestuser
+		'cds-off-fo': '1137767', #need webtestuser/admycca
 		'cds-on-fo': '5209236'
 		};
 
@@ -222,8 +224,6 @@ try:
 			accept_commands = False
 			print('Drivers are still running but script is ending')
 	print('\nProgram quiting...\n')
-	if (runDrivers):
-		print(clear)
 except:
 	print('\nDriver no longer available, quiting...\n')
 	if (runDrivers):
