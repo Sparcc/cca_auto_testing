@@ -122,7 +122,7 @@ if not debugging:
 				print(o, ' --> ', outlet[o])
 			print('\noutlet to user requirements:')
 			for r in requires:
-				print(r, ' --> ', outlet[r])
+				print(r, ' --> ', requires[r])
 #debug output statements
 #print('outlet: ',outlet)
 #print('designatedOutlet: ',designatedOutlet)
