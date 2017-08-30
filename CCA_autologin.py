@@ -217,8 +217,6 @@ try:
 			accept_commands = False
 			print('Drivers are still running but script is ending')
 	print('\nProgram quiting...\n')
-	if (runDrivers):
-		print(clear)
 except:
 	print('\nDriver no longer available, quiting...\n')
 	if (runDrivers):
