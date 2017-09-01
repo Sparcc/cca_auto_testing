@@ -48,6 +48,8 @@ acceptCommands = True #allows the use of commands to control drivers after autom
 drivers = [] #initial list of drivers
 debugging = False
 clear = "\n" * 100 #screen clearer
+makeOrder = False
+numberOfOrders = 1
 
 #setting driver options
 profile = webdriver.FirefoxProfile()
@@ -72,7 +74,7 @@ drivers=[webdriver.Chrome(driverPaths['Chrome']),
 #ARGUMENT HANDLING
 print('getting arguments...')
 options = 's:o:Su:d:i'
-longOptions = ['use=','outlet=','single','user=','std','direct_outlet=','info']
+longOptions = ['use=','outlet=','single','user=','std','direct_outlet=','info','order=']
 try:
 	opts, args = getopt.getopt(sys.argv[1:],options,longOptions)
 except getopt.GetoptError as e:
@@ -123,6 +125,9 @@ if not debugging:
 			print('\noutlet to user requirements:')
 			for r in requires:
 				print(r, ' --> ', requires[r])
+		if opt in ('--order'):
+			makeOrder = True
+			numberOfOrders = arg
 #debug output statements
 #print('outlet: ',outlet)
 #print('designatedOutlet: ',designatedOutlet)
@@ -182,6 +187,21 @@ for driver in drivers:
 	element.send_keys(passwordCurrent)
 	driver.find_element_by_id("signInButton").click()
 	
+	numberOfOrders = int(numberOfOrders)
+	print('Ordering ', numberOfOrders, ' items...')
+	if makeOrder:
+		i = 0
+		while i < numberOfOrders + 1:
+			#ordering
+			driver.get(testServerBaseURL + '/search?SearchString=390')
+			xpath='//div[@data-material-number="957601"]/span[@class="searchPage-count-control increaseQuantity"]'
+			driver.find_element_by_xpath(xpath).click() #add quantity
+			xpath='//div[@data-material-number="957601"]/div/span[@class="ctrl-text"]'
+			driver.find_element_by_xpath(xpath).click()
+			driver.get(testServerBaseURL + '/checkout')
+			xpath='//span[@class="submit"]'
+			driver.find_element_by_xpath(xpath).click()
+			i=i+1
 	
 	if selectOutlet:
 		print('\nSelecting an outlet....')
