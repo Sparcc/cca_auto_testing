@@ -20,6 +20,14 @@ outlet = {}
 requires = {}
 conn = sqlite3.connect('../db/cca_test_data.db')
 c = conn.cursor()
+
+#restore database from backup
+'''
+f = open('db.sql','r') #read
+sql = f.read()
+c.executescript(sql)
+'''
+
 for row in c.execute('SELECT alias, username, password FROM user'):
 	user[row[0]] = row[1]
 	password[row[0]] = row[2]
@@ -28,6 +36,13 @@ for row in c.execute('SELECT alias, number FROM outlet'):
 for row in c.execute('SELECT alias, userAlias FROM outlet'):
 	requires[row[0]] = row[1]
 
+#database backup
+'''
+with open('db.sql', 'w') as f: #write
+    for line in conn.iterdump():
+        f.write('%s\n' % line)	
+'''
+	
 conn.close()
 
 driverPaths = {'Chrome': 'C:\Selenium\chromedriver.exe',
