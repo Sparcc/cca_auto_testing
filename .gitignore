@@ -1,3 +1,4 @@
 *\.pyc
 geckodriver\.log
 test_data\.db 
+debug\.log
