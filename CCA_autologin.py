@@ -20,35 +20,42 @@ outlet = {}
 requires = {}
 conn = sqlite3.connect('../db/cca_test_data.db')
 c = conn.cursor()
+c2 = conn.cursor()
 
-#restore database from backup
-'''
-f = open('db.sql','r') #read
-sql = f.read()
-c.executescript(sql)
-'''
+#run -r or --restore option after getting a fresh commit
+def restoreDb():
+	#load database and delete all tables
+	print('\nDeleting tables before restore')
+	sql = 'DROP TABLE IF EXISTS user;'
+	c.executescript(sql)
+	sql = 'DROP TABLE IF EXISTS outlet;'
+	c2.executescript(sql)
+	#fill database with backup
+	print('\nRestoring database')
+	f = open('db.sql','r') #read
+	sql = f.read()
+	c.executescript(sql)
 
-for row in c.execute('SELECT alias, username, password FROM user'):
-	user[row[0]] = row[1]
-	password[row[0]] = row[2]
-for row in c.execute('SELECT alias, number FROM outlet'):
-	outlet[row[0]] = row[1]
-for row in c.execute('SELECT alias, userAlias FROM outlet'):
-	requires[row[0]] = row[1]
+#load database to memory
+try:
+	for row in c.execute('SELECT alias, username, password FROM user'):
+		user[row[0]] = row[1]
+		password[row[0]] = row[2]
+	for row in c.execute('SELECT alias, number FROM outlet'):
+		outlet[row[0]] = row[1]
+	for row in c.execute('SELECT alias, userAlias FROM outlet'):
+		requires[row[0]] = row[1]
+except sqlite3.OperationalError as e:
+	print('OperationError!')
 
 #database backup
-'''
 with open('db.sql', 'w') as f: #write
     for line in conn.iterdump():
         f.write('%s\n' % line)	
-'''
-	
-conn.close()
 
 driverPaths = {'Chrome': 'C:\Selenium\chromedriver.exe',
 		'Edge': 'C:\Selenium\MicrosoftWebDriver.exe',
-		'IE': 'C:\Selenium\IEDriverServer.exe'
-		};
+		'IE': 'C:\Selenium\IEDriverServer.exe'};
 
 #DEFAULTS
 singleBrowser = False #launch single browser
@@ -88,8 +95,8 @@ drivers=[webdriver.Chrome(driverPaths['Chrome']),
 
 #ARGUMENT HANDLING
 print('getting arguments...')
-options = 's:o:Su:d:i'
-longOptions = ['use=','outlet=','single','user=','std','direct_outlet=','info','order=']
+options = 's:o:Su:d:ir'
+longOptions = ['use=','outlet=','single','user=','std','stdq','direct_outlet=','info','order=','restore']
 try:
 	opts, args = getopt.getopt(sys.argv[1:],options,longOptions)
 except getopt.GetoptError as e:
@@ -118,10 +125,17 @@ if not debugging:
 		if opt in ('--std'):
 			testServerBaseURL = 'https://myccadevau.aus.ccamatil.com'
 			print('Using standard dev server...warning! xpaths might be different.')
+		if opt in ('--stdq'):
+			testServerBaseURL = 'https://test.mycca.com.au'
+			print('Using standard q server...warning! xpaths might be different.')
 		if opt in ('-d', '--direct_outlet'):
 			selectOutlet = True
 			outlet['custom'] = arg
 			designatedOutlet = 'custom'
+		if opt in ('-r' '--restore'):
+			runDrivers = False
+			acceptCommand = False
+			restoreDb()
 		if opt in ('-i', '--info'):
 			runDrivers = False
 			acceptCommands = False
@@ -143,6 +157,9 @@ if not debugging:
 		if opt in ('--order'):
 			makeOrder = True
 			numberOfOrders = arg
+#db still needed for restore option			
+conn.close()			
+			
 #debug output statements
 #print('outlet: ',outlet)
 #print('designatedOutlet: ',designatedOutlet)
