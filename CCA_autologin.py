@@ -173,7 +173,7 @@ for opt, arg in opts:
 		numberOfOrders = arg
 #db still needed for restore option
 #database backup
-if (!dbDumped):
+if (not dbDumped):
 	dumpDb()		
 conn.close()			
 			
