@@ -20,21 +20,28 @@ outlet = {}
 requires = {}
 conn = sqlite3.connect('../db/cca_test_data.db')
 c = conn.cursor()
-c2 = conn.cursor()
 
 #run -r or --restore option after getting a fresh commit
+#this should only happen before dump is created otherwise
+#old database will be read, dumped, then restored from dump
+#and new database sql commit won't be executed
 def restoreDb():
 	#load database and delete all tables
 	print('\nDeleting tables before restore')
 	sql = 'DROP TABLE IF EXISTS user;'
 	c.executescript(sql)
 	sql = 'DROP TABLE IF EXISTS outlet;'
-	c2.executescript(sql)
+	c.executescript(sql)
 	#fill database with backup
 	print('\nRestoring database')
 	f = open('db.sql','r') #read
 	sql = f.read()
 	c.executescript(sql)
+	
+def dumpDb():
+	with open('db.sql', 'w') as f: #write
+		for line in conn.iterdump():
+			f.write('%s\n' % line)	
 
 #load database to memory
 try:
@@ -46,12 +53,7 @@ try:
 	for row in c.execute('SELECT alias, userAlias FROM outlet'):
 		requires[row[0]] = row[1]
 except sqlite3.OperationalError as e:
-	print('OperationError!')
-
-#database backup
-with open('db.sql', 'w') as f: #write
-    for line in conn.iterdump():
-        f.write('%s\n' % line)	
+	print('OperationError!')	
 
 driverPaths = {'Chrome': 'C:\Selenium\chromedriver.exe',
 		'Edge': 'C:\Selenium\MicrosoftWebDriver.exe',
@@ -107,57 +109,58 @@ except getopt.GetoptError as e:
 if debugging:
 	print('opt: ', opts)
 	print('args: ', args)
-if not debugging:	
-	for opt, arg in opts:
-		if opt in ('-s', '--use'):
-			singleBrowser = True
-			designatedBrowser = arg
-			print('Now in single browser testing mode')
-			print('designatedBrowser is: ', designatedBrowser)
-		if opt in ('-S', '--single'):
-			singleBrowser = True
-		if opt in ('-u', '--user'):
-			designatedUser = user[arg]
-			passwordCurrent = password[arg]
-		if opt in ('-o', '--outlet'):
-			selectOutlet = True
-			designatedOutlet = arg
-		if opt in ('--std'):
-			testServerBaseURL = 'https://myccadevau.aus.ccamatil.com'
-			print('Using standard dev server...warning! xpaths might be different.')
-		if opt in ('--stdq'):
-			testServerBaseURL = 'https://test.mycca.com.au'
-			print('Using standard q server...warning! xpaths might be different.')
-		if opt in ('-d', '--direct_outlet'):
-			selectOutlet = True
-			outlet['custom'] = arg
-			designatedOutlet = 'custom'
-		if opt in ('-r' '--restore'):
-			runDrivers = False
-			acceptCommand = False
-			restoreDb()
-		if opt in ('-i', '--info'):
-			runDrivers = False
-			acceptCommands = False
-			print('------------------------------------------------------')
-			print('Options available: (e.g. -s Chrome or -S <---(Chrome is designatedBrowser by default):')
-			print(options)
-			print('\nLong options available (e.g. --single or --use Chrome):')
-			print(longOptions)
-			print('\ncurrent test users (password is entered automatically): ')
-			for u in user:
-				print(u, ' --> ', user[u])
-			print('\nFor use of outlet number directly use -d or --direct_outlet options.')
-			print('Outlets available:')
-			for o in outlet:
-				print(o, ' --> ', outlet[o])
-			print('\noutlet to user requirements:')
-			for r in requires:
-				print(r, ' --> ', requires[r])
-		if opt in ('--order'):
-			makeOrder = True
-			numberOfOrders = arg
-#db still needed for restore option			
+for opt, arg in opts:
+	if opt in ('-s', '--use'):
+		singleBrowser = True
+		designatedBrowser = arg
+		print('Now in single browser testing mode')
+		print('designatedBrowser is: ', designatedBrowser)
+	if opt in ('-S', '--single'):
+		singleBrowser = True
+	if opt in ('-u', '--user'):
+		designatedUser = user[arg]
+		passwordCurrent = password[arg]
+	if opt in ('-o', '--outlet'):
+		selectOutlet = True
+		designatedOutlet = arg
+	if opt in ('--std'):
+		testServerBaseURL = 'https://myccadevau.aus.ccamatil.com'
+		print('Using standard dev server...warning! xpaths might be different.')
+	if opt in ('--stdq'):
+		testServerBaseURL = 'https://test.mycca.com.au'
+		print('Using standard q server...warning! xpaths might be different.')
+	if opt in ('-d', '--direct_outlet'):
+		selectOutlet = True
+		outlet['custom'] = arg
+		designatedOutlet = 'custom'
+	if opt in ('-r' '--restore'):
+		runDrivers = False
+		acceptCommand = False
+		restoreDb()
+	if opt in ('-i', '--info'):
+		runDrivers = False
+		acceptCommands = False
+		print('------------------------------------------------------')
+		print('Options available: (e.g. -s Chrome or -S <---(Chrome is designatedBrowser by default):')
+		print(options)
+		print('\nLong options available (e.g. --single or --use Chrome):')
+		print(longOptions)
+		print('\ncurrent test users (password is entered automatically): ')
+		for u in user:
+			print(u, ' --> ', user[u])
+		print('\nFor use of outlet number directly use -d or --direct_outlet options.')
+		print('Outlets available:')
+		for o in outlet:
+			print(o, ' --> ', outlet[o])
+		print('\noutlet to user requirements:')
+		for r in requires:
+			print(r, ' --> ', requires[r])
+	if opt in ('--order'):
+		makeOrder = True
+		numberOfOrders = arg
+#db still needed for restore option
+#database backup
+dumpDb()		
 conn.close()			
 			
 #debug output statements
@@ -220,8 +223,8 @@ for driver in drivers:
 	driver.find_element_by_id("signInButton").click()
 	
 	numberOfOrders = int(numberOfOrders)
-	print('Ordering ', numberOfOrders, ' items...')
 	if makeOrder:
+		print('Ordering ', numberOfOrders, ' items...')
 		i = 0
 		while i < numberOfOrders + 1:
 			#ordering
