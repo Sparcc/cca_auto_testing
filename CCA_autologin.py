@@ -43,17 +43,20 @@ def dumpDb():
 		for line in conn.iterdump():
 			f.write('%s\n' % line)	
 
-#load database to memory
-try:
-	for row in c.execute('SELECT alias, username, password FROM user'):
-		user[row[0]] = row[1]
-		password[row[0]] = row[2]
-	for row in c.execute('SELECT alias, number FROM outlet'):
-		outlet[row[0]] = row[1]
-	for row in c.execute('SELECT alias, userAlias FROM outlet'):
-		requires[row[0]] = row[1]
-except sqlite3.OperationalError as e:
-	print('OperationError!')	
+def readDb():
+	#load database to memory
+	try:
+		for row in c.execute('SELECT alias, username, password FROM user'):
+			user[row[0]] = row[1]
+			password[row[0]] = row[2]
+		for row in c.execute('SELECT alias, number FROM outlet'):
+			outlet[row[0]] = row[1]
+		for row in c.execute('SELECT alias, userAlias FROM outlet'):
+			requires[row[0]] = row[1]
+	except sqlite3.OperationalError as e:
+		print('OperationError!')
+
+readDb()	
 
 driverPaths = {'Chrome': 'C:\Selenium\chromedriver.exe',
 		'Edge': 'C:\Selenium\MicrosoftWebDriver.exe',
@@ -73,6 +76,7 @@ drivers = [] #initial list of drivers
 debugging = False
 clear = "\n" * 100 #screen clearer
 makeOrder = False
+dbDumped = False
 numberOfOrders = 1
 
 #setting driver options
@@ -97,8 +101,8 @@ drivers=[webdriver.Chrome(driverPaths['Chrome']),
 
 #ARGUMENT HANDLING
 print('getting arguments...')
-options = 's:o:Su:d:ir'
-longOptions = ['use=','outlet=','single','user=','std','stdq','direct_outlet=','info','order=','restore']
+options = 's:o:Su:d:i'
+longOptions = ['use=','outlet=','single','user=','std','stdq','direct_outlet=','info','order=','restore','dump','read']
 try:
 	opts, args = getopt.getopt(sys.argv[1:],options,longOptions)
 except getopt.GetoptError as e:
@@ -133,10 +137,19 @@ for opt, arg in opts:
 		selectOutlet = True
 		outlet['custom'] = arg
 		designatedOutlet = 'custom'
-	if opt in ('-r' '--restore'):
+	if opt in ('--restore'):
 		runDrivers = False
 		acceptCommand = False
 		restoreDb()
+	if opt in ('--dump'):
+		runDrivers = False
+		acceptCommand = False
+		dumpDb()
+	if opt in ('--read'):
+		runDrivers = False
+		acceptCommand = False
+		readDb()
+		dbDumped = True;
 	if opt in ('-i', '--info'):
 		runDrivers = False
 		acceptCommands = False
@@ -160,7 +173,8 @@ for opt, arg in opts:
 		numberOfOrders = arg
 #db still needed for restore option
 #database backup
-dumpDb()		
+if (!dbDumped):
+	dumpDb()		
 conn.close()			
 			
 #debug output statements
