@@ -191,7 +191,7 @@ if runDrivers == True:
 		if designatedBrowser == 'edge':
 			drivers=[webdriver.Edge(driverPaths['Edge'])]
 		if designatedBrowser == 'firefox':
-			drivers=[webdriver.Firefox()]
+			drivers=[webdriver.Remote(firefoxCap)]
 		if designatedBrowser == 'ie':
 			drivers=[webdriver.Ie(driverPaths['IE'])]
 	else:
