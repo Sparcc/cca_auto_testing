@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import sys, getopt
 import os
 import sqlite3
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 """
 @author: Thomas Rea
@@ -80,16 +81,16 @@ dbDumped = False
 numberOfOrders = 1
 
 #setting driver options
-profile = webdriver.FirefoxProfile()
-profile.accept_untrusted_certs = True
+#profile = webdriver.FirefoxProfile()
+#profile.accept_untrusted_certs = True
 options = webdriver.ChromeOptions()
 options.add_argument('--ignore-certificate-errors')
 #HOW DO I GET CAPABILITIES TO WORK??
 #cannot set desired capabilities of IE for reason (registry problem??)
-#ieCapabilities = DesiredCapabilities.INTERNETEXPLORER.copy()
-#ieCapabilities['ignoreProtectedModeSettings'] = True
-#firefoxCapabilities = DesiredCapabilities.FIREFOX.copy()
-#firefoxCapabilities['acceptInsecureCerts'] = True
+ieCap = DesiredCapabilities.INTERNETEXPLORER.copy()
+ieCap['ignoreProtectedModeSettings'] = True
+firefoxCap = DesiredCapabilities.FIREFOX.copy()
+firefoxCap['acceptInsecureCerts'] = True
 
 '''
 drivers=[webdriver.Chrome(driverPaths['Chrome']),
@@ -190,7 +191,7 @@ if runDrivers == True:
 		if designatedBrowser == 'edge':
 			drivers=[webdriver.Edge(driverPaths['Edge'])]
 		if designatedBrowser == 'firefox':
-			drivers=[webdriver.Firefox(profile)]
+			drivers=[webdriver.Firefox()]
 		if designatedBrowser == 'ie':
 			drivers=[webdriver.Ie(driverPaths['IE'])]
 	else:
