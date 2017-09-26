@@ -241,6 +241,7 @@ for driver in drivers:
 	element.send_keys(passwordCurrent)
 	driver.find_element_by_id("signInButton").click()
 	
+	'''
 	numberOfOrders = int(numberOfOrders)
 	if makeOrder:
 		print('Ordering ', numberOfOrders, ' items...')
@@ -256,11 +257,13 @@ for driver in drivers:
 			xpath='//span[@class="submit"]'
 			driver.find_element_by_xpath(xpath).click()
 			i=i+1
-	
+	'''
 	if selectOutlet:
 		print('\nSelecting an outlet....')
+		xpath='//a[@class="dropdown-toggle showmyprofileddl"]'
+		xpath='//*[@id="wrapper"]/header/div[1]/nav/div/div[5]/ul/li[2]/a'
 		element = WebDriverWait(driver, 10).until(
-			EC.presence_of_element_located((By.XPATH, '//a[@class="dropdown-toggle showmyprofileddl"]')))
+			EC.presence_of_element_located((By.XPATH, xpath)))
 		element.click()#wait for profile dropdwon to load and click
 		#driver.find_element_by_class_name("showmyprofileddl").click()
 		driver.find_element_by_link_text("Switch outlet").click()
@@ -273,6 +276,7 @@ for driver in drivers:
 		driver.find_element_by_class_name("search").send_keys(outlet[designatedOutlet])
 		driver.implicitly_wait(10)#wait for outlet to load
 		xpath='//div[@data-outlet-number="'+outlet[designatedOutlet]+'-1"]/div/img'
+		
 		#//*[@id="outletList"]/div[1]/div
 		driver.find_element_by_xpath(xpath).click()
 		
