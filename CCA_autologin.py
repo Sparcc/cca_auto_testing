@@ -103,7 +103,7 @@ drivers=[webdriver.Chrome(driverPaths['Chrome']),
 #ARGUMENT HANDLING
 print('getting arguments...')
 options = 's:o:Su:d:i'
-longOptions = ['use=','outlet=','single','user=','std','stdq','direct_outlet=','info','order=','restore','dump','read']
+longOptions = ['use=','outlet=','single','user=','std','stdq','direct_outlet=','info','order=','restore','dump','read','debug']
 try:
 	opts, args = getopt.getopt(sys.argv[1:],options,longOptions)
 except getopt.GetoptError as e:
@@ -111,9 +111,6 @@ except getopt.GetoptError as e:
 	print ('General Usage: ', sys.argv[0], '<-option(single)> <--long_option')
 	print ('Use -i option for more usage guides and lists of test data')
 	sys.exit(2)
-if debugging:
-	print('opt: ', opts)
-	print('args: ', args)
 for opt, arg in opts:
 	if opt in ('-s', '--use'):
 		singleBrowser = True
@@ -172,6 +169,13 @@ for opt, arg in opts:
 	if opt in ('--order'):
 		makeOrder = True
 		numberOfOrders = arg
+	if opt in ('--debug'):
+		runDrivers = False
+		acceptCommands = False
+		debugging = True
+if debugging:
+	print('opt: ', opts)
+	print('args: ', args)
 #db still needed for restore option
 #database backup
 if (not dbDumped):
@@ -195,7 +199,7 @@ if runDrivers == True:
 		if designatedBrowser == 'ie':
 			drivers=[webdriver.Ie(driverPaths['IE'])]
 	else:
-		drivers=[webdriver.Firefox(profile),
+		drivers=[webdriver.Firefox(),
 			webdriver.Chrome(driverPaths['Chrome']),
 			webdriver.Edge(driverPaths['Edge']),
 			webdriver.Ie(driverPaths['IE'])
@@ -237,8 +241,8 @@ for driver in drivers:
 	element.send_keys(passwordCurrent)
 	driver.find_element_by_id("signInButton").click()
 	
-	numberOfOrders = int(numberOfOrders)
 	if makeOrder:
+		numberOfOrders = int(numberOfOrders)
 		print('Ordering ', numberOfOrders, ' items...')
 		i = 0
 		while i < numberOfOrders + 1:
