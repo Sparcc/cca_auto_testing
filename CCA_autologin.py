@@ -241,8 +241,8 @@ for driver in drivers:
 	element.send_keys(passwordCurrent)
 	driver.find_element_by_id("signInButton").click()
 	
+	numberOfOrders = int(numberOfOrders)
 	if makeOrder:
-		numberOfOrders = int(numberOfOrders)
 		print('Ordering ', numberOfOrders, ' items...')
 		i = 0
 		while i < numberOfOrders + 1:
