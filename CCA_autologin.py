@@ -111,6 +111,7 @@ except getopt.GetoptError as e:
 	print ('General Usage: ', sys.argv[0], '<-option(single)> <--long_option')
 	print ('Use -i option for more usage guides and lists of test data')
 	sys.exit(2)
+	
 for opt, arg in opts:
 	if opt in ('-s', '--use'):
 		singleBrowser = True
@@ -128,22 +129,26 @@ for opt, arg in opts:
 	if opt in ('--std'):
 		testServerBaseURL = 'https://myccadevau.aus.ccamatil.com'
 		print('Using standard dev server...warning! xpaths might be different.')
-	if opt in ('--stdq'):
+	elif opt in ('--stdq'):
 		testServerBaseURL = 'https://test.mycca.com.au'
 		print('Using standard q server...warning! xpaths might be different.')
-	if opt in ('-d', '--direct_outlet'):
+	if opt in ('--direct_outlet'): #-s option matches the --dump option as well probably
+		print('Using direct outlet...')
 		selectOutlet = True
 		outlet['custom'] = arg
 		designatedOutlet = 'custom'
 	if opt in ('--restore'):
+		print('Restoring database...')
 		runDrivers = False
 		acceptCommand = False
 		restoreDb()
-	if opt in ('--dump'):
+	if opt == '--dump':
+		print('Dumping database...')
 		runDrivers = False
 		acceptCommand = False
 		dumpDb()
-	if opt in ('--read'):
+	if opt == '--read':
+		print('Reading database to memory...')
 		runDrivers = False
 		acceptCommand = False
 		readDb()
@@ -169,7 +174,7 @@ for opt, arg in opts:
 	if opt in ('--order'):
 		makeOrder = True
 		numberOfOrders = arg
-	if opt in ('--debug'):
+	if opt == '--debug':
 		runDrivers = False
 		acceptCommands = False
 		debugging = True
