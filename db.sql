@@ -29,10 +29,10 @@ CREATE TABLE "user" (
 	PRIMARY KEY(`username`)
 );
 INSERT INTO "user" VALUES('promo-9193','cutedog@xyz123.com','35Paxton');
-INSERT INTO "user" VALUES('cds','abcdxyz@outlook.com','Mycca@11');
+INSERT INTO "user" VALUES('payment-access','abcdxyz@outlook.com','Mycca@11');
 INSERT INTO "user" VALUES('promo-1075','myccatest123@gmail.com','Mycca@11');
 INSERT INTO "user" VALUES('webtestuser','webtestuser1','b');
-INSERT INTO "user" VALUES('admycca','admycca@outlook.com','Mycca@11');
+INSERT INTO "user" VALUES('admin-bde','admycca@outlook.com','Mycca@11');
 INSERT INTO "user" VALUES('corin','corin3@hotmail.com','Coke@123');
 INSERT INTO "user" VALUES('testcust','testcustomercca@outlook.com','Mycca@15');
 COMMIT;

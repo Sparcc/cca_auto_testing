@@ -57,6 +57,7 @@ def readDb():
 	except sqlite3.OperationalError as e:
 		print('OperationError!')
 
+#always read the database - It should also always exist inititally only	
 readDb()	
 
 driverPaths = {'Chrome': 'C:\Selenium\chromedriver.exe',
@@ -68,8 +69,8 @@ singleBrowser = False #launch single browser
 selectOutlet = False #enables outlet selection
 designatedBrowser = 'chrome' #default browser in single browser mode
 designatedOutlet = '' #default outlet when outlet selection enabled
-designatedUser = user['cds'] #default user is one that tests cds system
-passwordCurrent = password['cds'] #default password is for user that tests cds system
+designatedUser = user['admin-bde'] #default user is one that tests cds system
+passwordCurrent = password['admin-bde'] #default password is for user that tests cds system
 testServerBaseURL = 'https://myccadevau-promo.aus.ccamatil.com' #promo dev is default environment
 runDrivers = True #enables automation
 acceptCommands = True #allows the use of commands to control drivers after automation has completed
@@ -103,7 +104,7 @@ drivers=[webdriver.Chrome(driverPaths['Chrome']),
 #ARGUMENT HANDLING
 print('getting arguments...')
 options = 's:o:Su:d:i'
-longOptions = ['use=','outlet=','single','user=','std','stdq','direct_outlet=','info','order=','restore','dump','read','debug']
+longOptions = ['use=','outlet=','single','user=','std','stdq','direct_outlet=','info','order=','restore','dump','debug']
 try:
 	opts, args = getopt.getopt(sys.argv[1:],options,longOptions)
 except getopt.GetoptError as e:
@@ -113,47 +114,43 @@ except getopt.GetoptError as e:
 	sys.exit(2)
 	
 for opt, arg in opts:
-	if opt in ('-s', '--use'):
+	if (opt == '-s') or (opt == '--use'):
 		singleBrowser = True
 		designatedBrowser = arg
 		print('Now in single browser testing mode')
 		print('designatedBrowser is: ', designatedBrowser)
-	if opt in ('-S', '--single'):
+	if (opt == '-S') or (opt == '--single'):
 		singleBrowser = True
-	if opt in ('-u', '--user'):
+	if (opt == '-u') or (opt ==  '--user'):
 		designatedUser = user[arg]
 		passwordCurrent = password[arg]
-	if opt in ('-o', '--outlet'):
+	if (opt == '-o') or (opt == '--outlet'):
 		selectOutlet = True
 		designatedOutlet = arg
-	if opt in ('--std'):
+	if opt == '--std':
 		testServerBaseURL = 'https://myccadevau.aus.ccamatil.com'
 		print('Using standard dev server...warning! xpaths might be different.')
-	elif opt in ('--stdq'):
+	elif opt == '--stdq':
 		testServerBaseURL = 'https://test.mycca.com.au'
 		print('Using standard q server...warning! xpaths might be different.')
-	if opt in ('--direct_outlet'): #-s option matches the --dump option as well probably
+	if opt == '--direct_outlet': #-s option matches the --dump option as well probably
 		print('Using direct outlet...')
 		selectOutlet = True
 		outlet['custom'] = arg
 		designatedOutlet = 'custom'
-	if opt in ('--restore'):
+	if opt == '--restore':
 		print('Restoring database...')
 		runDrivers = False
-		acceptCommand = False
+		acceptCommands = False
 		restoreDb()
 	if opt == '--dump':
 		print('Dumping database...')
 		runDrivers = False
-		acceptCommand = False
-		dumpDb()
-	if opt == '--read':
-		print('Reading database to memory...')
-		runDrivers = False
-		acceptCommand = False
+		acceptCommands = False
 		readDb()
-		dbDumped = True;
-	if opt in ('-i', '--info'):
+		dumpDb()
+		dbDumped = True
+	if (opt == '-i') or (opt == '--info'):
 		runDrivers = False
 		acceptCommands = False
 		print('------------------------------------------------------')
@@ -171,7 +168,7 @@ for opt, arg in opts:
 		print('\noutlet to user requirements:')
 		for r in requires:
 			print(r, ' --> ', requires[r])
-	if opt in ('--order'):
+	if opt == '--order':
 		makeOrder = True
 		numberOfOrders = arg
 	if opt == '--debug':
