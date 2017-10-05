@@ -206,7 +206,30 @@ if runDrivers == True:
 			webdriver.Edge(driverPaths['Edge']),
 			webdriver.Ie(driverPaths['IE'])
 			];
-		
+			
+def navigateOutlet(driver):
+	try:
+		print('\nSelecting an outlet....')
+		xpath='//a[@class="dropdown-toggle showmyprofileddl"]'
+		xpath='//*[@id="wrapper"]/header/div[1]/nav/div/div[5]/ul/li[2]/a'
+		element = WebDriverWait(driver, 10).until(
+			EC.presence_of_element_located((By.XPATH, xpath)))
+		element.click()#wait for profile dropdwon to load and click
+		#driver.find_element_by_class_name("showmyprofileddl").click()
+		driver.find_element_by_link_text("Switch outlet").click()
+		#element = WebDriverWait(driver, 10).until(
+		#	EC.presence_of_element_located((By.LINK_TEXT, 'Switch Outlet')))
+		#element.click()
+		#element = WebDriverWait(driver, 10).until(
+		#	EC.presence_of_element_located((By.XPATH, 'Switch Outlet')))
+		#element.click()
+		driver.find_element_by_class_name("search").send_keys(outlet[designatedOutlet])
+		driver.implicitly_wait(10)#wait for outlet to load
+		xpath='//div[@data-outlet-number="'+outlet[designatedOutlet]+'-1"]/div/img'
+		#//*[@id="outletList"]/div[1]/div
+		driver.find_element_by_xpath(xpath).click()
+	except:
+		print('Cannot select outlet')
 for driver in drivers:
 	
 	#Different drivers have different functions!
@@ -261,27 +284,8 @@ for driver in drivers:
 			i=i+1
 	'''
 	if selectOutlet:
-		print('\nSelecting an outlet....')
-		xpath='//a[@class="dropdown-toggle showmyprofileddl"]'
-		xpath='//*[@id="wrapper"]/header/div[1]/nav/div/div[5]/ul/li[2]/a'
-		element = WebDriverWait(driver, 10).until(
-			EC.presence_of_element_located((By.XPATH, xpath)))
-		element.click()#wait for profile dropdwon to load and click
-		#driver.find_element_by_class_name("showmyprofileddl").click()
-		driver.find_element_by_link_text("Switch outlet").click()
-		#element = WebDriverWait(driver, 10).until(
-		#	EC.presence_of_element_located((By.LINK_TEXT, 'Switch Outlet')))
-		#element.click()
-		#element = WebDriverWait(driver, 10).until(
-		#	EC.presence_of_element_located((By.XPATH, 'Switch Outlet')))
-		#element.click()
-		driver.find_element_by_class_name("search").send_keys(outlet[designatedOutlet])
-		driver.implicitly_wait(10)#wait for outlet to load
-		xpath='//div[@data-outlet-number="'+outlet[designatedOutlet]+'-1"]/div/img'
-		
-		#//*[@id="outletList"]/div[1]/div
-		driver.find_element_by_xpath(xpath).click()
-		
+		navigateOutlet()
+'''		
 try:
 	while acceptCommands:
 		print('Please enter a command:')
@@ -296,8 +300,45 @@ try:
 		if ('leave','release') in command.lower():
 			accept_commands = False
 			print('Drivers are still running but script is ending')
+		if ('outlet') in command.lower():
+			print('Input designated outlet: ')
+			cArg = input()
+			designatedOutlet = cArg
+			navigateOutlet()
+			for driver in drivers:
+				if selectOutlet:
+					navigateOutlet(driver)
+			
 	print('\nProgram quiting...\n')
 except:
 	print('\nDriver no longer available, quiting...\n')
-	if (runDrivers):
-		print(clear)
+'''
+while acceptCommands:
+	print('Please enter a command:')
+	command = input()
+	if 'quit' == command.lower():
+		for driver in drivers:
+			driver.quit()
+		acceptCommands = False
+	if 'running' == command.lower():
+		for driver in drivers:
+			print(driver.name)
+	if ('leave','release') == command.lower():
+		acceptCommands = False
+		print('Drivers are still running but script is ending')
+	if 'outlet' == command.lower():
+		print('Input designated outlet: ')
+		cArg = input()
+		designatedOutlet = cArg
+		for driver in drivers:
+			navigateOutlet(driver)
+	if 'direct_outlet' == command.lower():
+		print('Input direct outlet: ')
+		cArg = input()
+		designatedOutlet = cArg
+		outlet['custom'] = cArg
+		designatedOutlet = 'custom'
+		for driver in drivers:
+			navigateOutlet(driver)
+		
+print('\nProgram quiting...\n')
