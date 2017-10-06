@@ -323,7 +323,7 @@ while acceptCommands:
 	if 'running' == command.lower():
 		for driver in drivers:
 			print(driver.name)
-	if ('leave','release') == command.lower():
+	if ('release') == command.lower():
 		acceptCommands = False
 		print('Drivers are still running but script is ending')
 	if 'outlet' == command.lower():
