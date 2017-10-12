@@ -207,22 +207,22 @@ if runDrivers == True:
 			webdriver.Ie(driverPaths['IE'])
 			];
 			
-def orderItems(numberOfOrders)
+def orderItems(numberOfOrders):
 	print('Ordering ', numberOfOrders, ' items...')
-		i = 0
-		while i < numberOfOrders + 1:
-			#ordering
-			driver.get(testServerBaseURL + '/search?SearchString=390')
-			#xpath='//div[@data-material-number="957601"]/span[@class="searchPage-count-control increaseQuantity"]'
-			xpath='//*[@id="search"]/div[3]/div[2]/div/div/div/div/div/div/div/div/div[2]/div[1]/div/footer[1]/div/button[2]'
-			driver.find_element_by_xpath(xpath).click() #add quantity
-			#xpath='//div[@data-material-number="957601"]/div/span[@class="ctrl-text"]'
-			xpath='//*[@id="search"]/div[3]/div[2]/div/div/div/div/div/div/div/div/div[2]/div[1]/div/footer[1]/button'
-			driver.find_element_by_xpath(xpath).click() #add to cart
-			driver.get(testServerBaseURL + '/checkout')
-			xpath='//span[@class="submit"]'
-			driver.find_element_by_xpath(xpath).click()
-			i=i+1
+	i = 0
+	while i < numberOfOrders + 1:
+		#ordering
+		driver.get(testServerBaseURL + '/search?SearchString=390')
+		#xpath='//div[@data-material-number="957601"]/span[@class="searchPage-count-control increaseQuantity"]'
+		xpath='//*[@id="search"]/div[3]/div[2]/div/div/div/div/div/div/div/div/div[2]/div[1]/div/footer[1]/div/button[2]'
+		driver.find_element_by_xpath(xpath).click() #add quantity
+		#xpath='//div[@data-material-number="957601"]/div/span[@class="ctrl-text"]'
+		xpath='//*[@id="search"]/div[3]/div[2]/div/div/div/div/div/div/div/div/div[2]/div[1]/div/footer[1]/button'
+		driver.find_element_by_xpath(xpath).click() #add to cart
+		driver.get(testServerBaseURL + '/checkout')
+		xpath='//span[@class="submit"]'
+		driver.find_element_by_xpath(xpath).click()
+		i=i+1
 			
 def navigateOutlet(driver):
 	try:
