@@ -207,6 +207,23 @@ if runDrivers == True:
 			webdriver.Ie(driverPaths['IE'])
 			];
 			
+def orderItems(numberOfOrders)
+	print('Ordering ', numberOfOrders, ' items...')
+		i = 0
+		while i < numberOfOrders + 1:
+			#ordering
+			driver.get(testServerBaseURL + '/search?SearchString=390')
+			#xpath='//div[@data-material-number="957601"]/span[@class="searchPage-count-control increaseQuantity"]'
+			xpath='//*[@id="search"]/div[3]/div[2]/div/div/div/div/div/div/div/div/div[2]/div[1]/div/footer[1]/div/button[2]'
+			driver.find_element_by_xpath(xpath).click() #add quantity
+			#xpath='//div[@data-material-number="957601"]/div/span[@class="ctrl-text"]'
+			xpath='//*[@id="search"]/div[3]/div[2]/div/div/div/div/div/div/div/div/div[2]/div[1]/div/footer[1]/button'
+			driver.find_element_by_xpath(xpath).click() #add to cart
+			driver.get(testServerBaseURL + '/checkout')
+			xpath='//span[@class="submit"]'
+			driver.find_element_by_xpath(xpath).click()
+			i=i+1
+			
 def navigateOutlet(driver):
 	try:
 		print('\nSelecting an outlet....')
@@ -266,53 +283,14 @@ for driver in drivers:
 	element.send_keys(passwordCurrent)
 	driver.find_element_by_id("signInButton").click()
 	
-	'''
+	
 	numberOfOrders = int(numberOfOrders)
 	if makeOrder:
-		print('Ordering ', numberOfOrders, ' items...')
-		i = 0
-		while i < numberOfOrders + 1:
-			#ordering
-			driver.get(testServerBaseURL + '/search?SearchString=390')
-			xpath='//div[@data-material-number="957601"]/span[@class="searchPage-count-control increaseQuantity"]'
-			driver.find_element_by_xpath(xpath).click() #add quantity
-			xpath='//div[@data-material-number="957601"]/div/span[@class="ctrl-text"]'
-			driver.find_element_by_xpath(xpath).click()
-			driver.get(testServerBaseURL + '/checkout')
-			xpath='//span[@class="submit"]'
-			driver.find_element_by_xpath(xpath).click()
-			i=i+1
-	'''
+		orderItems(numberOfOrders)
+	
 	if selectOutlet:
 		navigateOutlet()
-'''		
-try:
-	while acceptCommands:
-		print('Please enter a command:')
-		command = input()
-		if 'quit' in command.lower():
-			for driver in drivers:
-				driver.quit()
-				accept_commands = False
-		if 'running' in command:
-			for driver in drivers:
-				print(driver.name)
-		if ('leave','release') in command.lower():
-			accept_commands = False
-			print('Drivers are still running but script is ending')
-		if ('outlet') in command.lower():
-			print('Input designated outlet: ')
-			cArg = input()
-			designatedOutlet = cArg
-			navigateOutlet()
-			for driver in drivers:
-				if selectOutlet:
-					navigateOutlet(driver)
-			
-	print('\nProgram quiting...\n')
-except:
-	print('\nDriver no longer available, quiting...\n')
-'''
+		
 while acceptCommands:
 	print('Please enter a command:')
 	command = input()
