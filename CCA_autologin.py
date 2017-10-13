@@ -289,7 +289,7 @@ for driver in drivers:
 		orderItems(numberOfOrders)
 	
 	if selectOutlet:
-		navigateOutlet()
+		navigateOutlet(driver)
 		
 while acceptCommands:
 	print('Please enter a command:')
