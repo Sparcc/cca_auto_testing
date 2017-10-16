@@ -7,6 +7,7 @@ import sys, getopt
 import os
 import sqlite3
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+import time
 
 """
 @author: Thomas Rea
@@ -227,23 +228,16 @@ def orderItems(driver,numberOfOrders):
 def navigateOutlet(driver):
 	try:
 		print('\nSelecting an outlet....')
-		xpath='//a[@class="dropdown-toggle showmyprofileddl"]'
+		#xpath='//a[@class="dropdown-toggle showmyprofileddl"]'
 		xpath='//*[@id="wrapper"]/header/div[1]/nav/div/div[5]/ul/li[2]/a'
 		element = WebDriverWait(driver, 10).until(
 			EC.presence_of_element_located((By.XPATH, xpath)))
 		element.click()#wait for profile dropdwon to load and click
-		#driver.find_element_by_class_name("showmyprofileddl").click()
 		driver.find_element_by_link_text("Switch outlet").click()
-		#element = WebDriverWait(driver, 10).until(
-		#	EC.presence_of_element_located((By.LINK_TEXT, 'Switch Outlet')))
-		#element.click()
-		#element = WebDriverWait(driver, 10).until(
-		#	EC.presence_of_element_located((By.XPATH, 'Switch Outlet')))
-		#element.click()
 		driver.find_element_by_class_name("search").send_keys(outlet[designatedOutlet])
 		driver.implicitly_wait(10)#wait for outlet to load
+		time.sleep(1)#wait for more search results appear
 		xpath='//div[@data-outlet-number="'+outlet[designatedOutlet]+'-1"]/div/img'
-		#//*[@id="outletList"]/div[1]/div
 		driver.find_element_by_xpath(xpath).click()
 	except:
 		print('Cannot select outlet')
