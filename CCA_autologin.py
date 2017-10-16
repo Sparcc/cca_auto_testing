@@ -207,7 +207,7 @@ if runDrivers == True:
 			webdriver.Ie(driverPaths['IE'])
 			];
 			
-def orderItems(numberOfOrders):
+def orderItems(driver,numberOfOrders):
 	print('Ordering ', numberOfOrders, ' items...')
 	i = 0
 	while i < numberOfOrders + 1:
@@ -318,5 +318,10 @@ while acceptCommands:
 		designatedOutlet = 'custom'
 		for driver in drivers:
 			navigateOutlet(driver)
+	if 'order' == command.lower():
+		print('Input number to order: ')
+		cArg = input()
+		for driver in drivers:
+			makeOrder(driver,int(cArg))
 		
 print('\nProgram quiting...\n')
