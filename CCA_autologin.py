@@ -311,7 +311,7 @@ while acceptCommands:
 		outlet['custom'] = cArg
 		designatedOutlet = 'custom'
 		for driver in drivers:
-			navigateOutlet(driver)
+			navigateOutlet(driver,designatedOutlet)
 	if 'order' == command.lower():
 		print('Input number to order: ')
 		cArg = input()
