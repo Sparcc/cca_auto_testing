@@ -208,7 +208,7 @@ if runDrivers == True:
 			webdriver.Ie(driverPaths['IE'])
 			];
 			
-def orderItems(driver,numberOfOrders):
+def orderItems(driver,testServerBaseURL,numberOfOrders):
 	print('Ordering ', numberOfOrders, ' items...')
 	i = 0
 	while i < numberOfOrders + 1:
@@ -225,7 +225,7 @@ def orderItems(driver,numberOfOrders):
 		driver.find_element_by_xpath(xpath).click()
 		i=i+1
 			
-def navigateOutlet(driver):
+def navigateOutlet(driver,designatedOutlet):
 	try:
 		print('\nSelecting an outlet....')
 		#xpath='//a[@class="dropdown-toggle showmyprofileddl"]'
@@ -236,11 +236,11 @@ def navigateOutlet(driver):
 		driver.find_element_by_link_text("Switch outlet").click()
 		driver.find_element_by_class_name("search").send_keys(outlet[designatedOutlet])
 		driver.implicitly_wait(10)#wait for outlet to load
-		time.sleep(1)#wait for more search results appear
+		time.sleep(2)#wait for more search results appear
 		xpath='//div[@data-outlet-number="'+outlet[designatedOutlet]+'-1"]/div/img'
 		driver.find_element_by_xpath(xpath).click()
 	except:
-		print('Cannot select outlet')
+		print('Cannot select outlet!')
 for driver in drivers:
 	
 	#Different drivers have different functions!
@@ -280,10 +280,10 @@ for driver in drivers:
 	
 	numberOfOrders = int(numberOfOrders)
 	if makeOrder:
-		orderItems(numberOfOrders)
+		orderItems(driver,testServerBaseURL,numberOfOrders)
 	
 	if selectOutlet:
-		navigateOutlet(driver)
+		navigateOutlet(driver,designatedOutlet)
 		
 while acceptCommands:
 	print('Please enter a command:')
