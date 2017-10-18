@@ -316,6 +316,6 @@ while acceptCommands:
 		print('Input number to order: ')
 		cArg = input()
 		for driver in drivers:
-			makeOrder(driver,int(cArg))
+			orderItems(driver,testServerBaseURL,int(cArg))
 		
 print('\nProgram quiting...\n')
