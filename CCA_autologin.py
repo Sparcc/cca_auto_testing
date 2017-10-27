@@ -81,6 +81,7 @@ clear = "\n" * 100 #screen clearer
 makeOrder = False
 dbDumped = False
 numberOfOrders = 1
+commandString = []
 
 #setting driver options
 #profile = webdriver.FirefoxProfile()
@@ -105,7 +106,9 @@ drivers=[webdriver.Chrome(driverPaths['Chrome']),
 #ARGUMENT HANDLING
 print('getting arguments...')
 options = 's:o:Su:d:i'
-longOptions = ['use=','outlet=','single','user=','std','stdq','direct_outlet=','info','order=','restore','dump','debug']
+longOptions = ['use=','outlet=','single','user=','std','stdq',
+			'direct_outlet=','info','order=','restore','dump',
+			'debug','command=']
 try:
 	opts, args = getopt.getopt(sys.argv[1:],options,longOptions)
 except getopt.GetoptError as e:
@@ -176,6 +179,8 @@ for opt, arg in opts:
 		runDrivers = False
 		acceptCommands = False
 		debugging = True
+	if opt == '--command':
+		
 if debugging:
 	print('opt: ', opts)
 	print('args: ', args)
