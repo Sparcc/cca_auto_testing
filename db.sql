@@ -22,6 +22,8 @@ INSERT INTO "outlet" VALUES('promo-1020-91',5204048,'promo-1075');
 INSERT INTO "outlet" VALUES('cds-on-fo',5772504,'admycca');
 INSERT INTO "outlet" VALUES('cds-80',5101222,'cds');
 INSERT INTO "outlet" VALUES('pay-access',1148617,'corin');
+INSERT INTO "outlet" VALUES('freq-ordered',8000353,'payment-access');
+INSERT INTO "outlet" VALUES('freq-ordered2',100036,'payment-access');
 CREATE TABLE "user" (
 	`alias`	TEXT,
 	`username`	TEXT,
