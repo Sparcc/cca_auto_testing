@@ -303,7 +303,7 @@ while acceptCommands:
 		cArg = input()
 		designatedOutlet = cArg
 		for driver in drivers:
-			navigateOutlet(driver)
+			navigateOutlet(driver, designatedOutlet)
 	if 'direct_outlet' == command.lower():
 		print('Input direct outlet: ')
 		cArg = input()
