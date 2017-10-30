@@ -237,8 +237,12 @@ def navigateOutlet(driver,designatedOutlet):
 		driver.find_element_by_class_name("search").send_keys(outlet[designatedOutlet])
 		driver.implicitly_wait(10)#wait for outlet to load
 		time.sleep(2)#wait for more search results appear
-		xpath='//div[@data-outlet-number="'+outlet[designatedOutlet]+'-1"]/div/img'
-		driver.find_element_by_xpath(xpath).click()
+		try:
+			xpath='//div[@data-outlet-number="'+outlet[designatedOutlet]+'-1"]/div/img'
+			driver.find_element_by_xpath(xpath).click()
+		except:
+			xpath='//div[@data-outlet-number="'+outlet[designatedOutlet]+'-2"]/div/img'
+			driver.find_element_by_xpath(xpath).click()
 	except:
 		print('Cannot select outlet!')
 for driver in drivers:
