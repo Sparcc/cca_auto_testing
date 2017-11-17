@@ -28,7 +28,7 @@ c = conn.cursor()
 #old database will be read, dumped, then restored from dump
 #and new database sql commit won't be executed
 def restoreDb():
-	#load database and delete all tables
+	#restore database and delete all tables
 	print('\nDeleting tables before restore')
 	sql = 'DROP TABLE IF EXISTS user;'
 	c.executescript(sql)
@@ -105,7 +105,7 @@ drivers=[webdriver.Chrome(driverPaths['Chrome']),
 #ARGUMENT HANDLING
 print('getting arguments...')
 options = 's:o:Su:d:i'
-longOptions = ['use=','outlet=','single','user=','std','stdq','direct_outlet=','info','order=','restore','dump','debug']
+longOptions = ['use=','outlet=','single','user=','std','stdq','direct_outlet=','info','order=','restore','dump','debug','no_command']
 try:
 	opts, args = getopt.getopt(sys.argv[1:],options,longOptions)
 except getopt.GetoptError as e:
@@ -176,6 +176,8 @@ for opt, arg in opts:
 		runDrivers = False
 		acceptCommands = False
 		debugging = True
+	if opt == '--no_command':
+		acceptCommands = False
 if debugging:
 	print('opt: ', opts)
 	print('args: ', args)
