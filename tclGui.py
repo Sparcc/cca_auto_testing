@@ -42,7 +42,7 @@ class MainApp(App):
 			
 class SettingsWindow(App):
 	args=4
-	argsOptionsValues =[][][]
+	#argsOptionsValues =[][][]
 	def createElements(self):
 		for x in range(0,self.args):
 			self.addArg(x)
